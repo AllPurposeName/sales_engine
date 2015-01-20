@@ -2,7 +2,7 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
-require '../lib/customer'
+require './lib/customer'
 # require 'byebug'
 
 class CustomerTest < MiniTest::Test
@@ -12,14 +12,15 @@ class CustomerTest < MiniTest::Test
   end
 
   def test_it_loads_a_CSV_file
-    new_file = CSV.open("../data/customers_sample.csv")
+    new_file = CSV.open("./data/customers_sample.csv")
     assert new_file
   end
 
   def test_it_can_read_the_file
-    new_file = CSV.open("../data/customers_sample.csv")
-    new_file.readline
-    assert new_file.chars[0] = "i"
+    new_file = CSV.open("./data/customers_simple_sample.csv")
+    result = ["1","Joey","Ondricka","2012-03-27 14:54:09 UTC",
+              "2012-03-27 14:54:09 UTC"]
+    assert_equal result, new_file.read.flatten
   end
 
 
