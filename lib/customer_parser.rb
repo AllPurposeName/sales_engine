@@ -1,10 +1,10 @@
 require 'CSV'
-require_relative '../lib/item'
-class ItemParser
+require_relative '../lib/customer'
+class CustomerParser
   attr_reader :filename
 
   def self.parse(queued_file, our_repo=nil)
-    new(queued_file, our_repo).create_items
+    new(queued_file, our_repo).create_customers
   end
 
   def initialize(queued_file, our_repo=nil)
@@ -12,10 +12,10 @@ class ItemParser
     @repository = our_repo
   end
 
-  def create_items
+  def create_customers
     parsed_file = csv_parsing
     parsed_file.map do |row|
-      Item.new(row, @repository)
+      Customer.new(row, @repository)
     end
   end
 
@@ -28,4 +28,4 @@ class ItemParser
 end
 
 # if file nonsense
-# puts ItemParser.parse("test/support/item_sample.csv")
+# puts CustomerParser.parse("test/support/customer_sample.csv")
