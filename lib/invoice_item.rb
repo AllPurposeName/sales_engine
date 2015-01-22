@@ -1,4 +1,4 @@
-class Merchant
+class InvoiceItem
   attr_reader :id, :invoice_id, :credit_card_number, :authorization_result
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i

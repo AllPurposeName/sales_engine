@@ -1,20 +1,3 @@
-customer_repo
-customer
-customer_sample
-customer
-collect_customer
-customer_repository
-customer_parser
-parsed_customer
-Customer
-CustomerTest
-CustomerRepository
-CustomerRepositoryTest
-CustomerParser
-CustomerParserTest
-FakeCustomerRepository
-CustomerIntegrationTest
-
 require 'pry'
 require 'minitest/autorun'
 require 'minitest/pride'

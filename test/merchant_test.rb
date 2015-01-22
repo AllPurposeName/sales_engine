@@ -1,20 +1,3 @@
-merchant_repo
-merchant
-merchant_sample
-merchant
-collect_merchant
-merchant_repository
-merchant_parser
-parsed_merchants
-Merchant
-MerchantTest
-MerchantRepository
-MerchantRepositoryTest
-MerchantParser
-MerchantParserTest
-FakeMerchantRepository
-MerchantIntegrationTest
-
 require 'pry'
 require 'minitest/autorun'
 require 'minitest/pride'

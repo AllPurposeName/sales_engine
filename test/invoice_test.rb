@@ -1,20 +1,3 @@
-invoice_repo
-invoice
-invoice_sample
-invoice
-collect_invoice
-invoice_repository
-invoice_parser
-parsed_invoices
-Invoice
-InvoiceTest
-InvoiceRepository
-InvoiceRepositoryTest
-InvoiceParser
-InvoiceParserTest
-FakeInvoiceRepository
-InvoiceIntegrationTest
-
 require 'pry'
 require 'minitest/autorun'
 require 'minitest/pride'
