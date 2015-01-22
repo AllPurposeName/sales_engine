@@ -126,9 +126,9 @@ class TransactionIntegrationTest < MiniTest::Test
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
-    skip
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
-    assert @transaction_repo.first.is_a?(Transaction)
+    transactions = @transaction_repo.collect_transactions
+    assert transactions.first.is_a?(Transaction)
   end
 
 end
