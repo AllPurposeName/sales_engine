@@ -1,47 +1,57 @@
+require'pry'
 class CustomerRepository
+  attr_reader :file_to_parse
 
-  def initialize(data_file=nil)
-  @file = data_file
+  def initialize(filename, our_sales_engine=nil)
+    @file_to_parse = filename
+    @sales_engine = our_sales_engine
+    @customers = []
   end
 
-  def csv_parse
-    CSV.foreach('./data/customers.csv', headers: true, header_converters: :symbol) do |row|
-      puts row[:last_name]
+  def collect_customers
+    @customers = CustomerParser.parse(file_to_parse)
+  end
 
+  def find_one_invoice_id(invoice_id_target)
+    @customers.find do |customer|
+      customer.invoice_id == invoice_id_target
+    end
+  end
 
+  def find_one_authorization(authorization_target)
+    @customers.find do |customer|
+      customer.authorization_result == authorization_target
+    end
+  end
 
-    CSV.foreach(@file, headers: true, header_converters: :symbol) do |row|
-        class.new(:name, "joey")
+  def find_one_credit_card_number(credit_card_number_target)
+    @customers.find do |customer|
+      customer.credit_card_number == credit_card_number_target
+    end
+  end
 
-        case row[0]
-        when customer_id
-          Customer.new(criteria :customer_id, :first_name, :last_name, :created_at, :updated_at)
-        # when item_id
-        #   Item.new(:item_id, :unit_price, etc)
-        # when merchant_id
-        #   Merchant.new()
-        end
-      end
+  def find_all_by_invoice_id(invoice_id_target)
+    @customers.find_all do |customer|
+      customer.invoice_id == invoice_id_target
+    end
+  end
 
-reader criteria
+  def find_all_by_authorization(authorization_target)
+    @customers.find_all do |customer|
+      customer.authorization_result == authorization_target
+    end
+  end
 
-customer_criteria = (:customer_id, :first_name, :last_name, :created_at, :updated_at)
-item_criteria = (:item_id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at)
-merchant_criteria = (:merchant_id, :name, :created_at, :updated_at)
-invoice_criteria = (:invoice_id, :customer_id, :merchant_id, :status, :created_at, :updated_at)
-invoice_items_criteria = (:invoice_item_id, :item_id, :invoice_id, :quanitity, :unit_price, :created_at, :updated_at)
-transactions_criteria = (:transaction_id, :invoice_id, :credit_card_number
+  def find_all_by_credit_card_number(credit_card_number_target)
+    @customers.find_all do |customer|
+      customer.credit_card_number == credit_card_number_target
+    end
+  end
 
-end
-end
+  private
 
+  def all_customers
+    @customers
+  end
 
-CSV.foreach("customers.csv", headers: true, header_converters: :symbol) do |row|
-  letter = :last_name[0]
-  CSV.open("customers_#{letter}.csv" 'wb') << row
-end
-
-
-CSV.open('newfile.csv', 'w') do |csv|
-  csv << ["strings"]
 end
