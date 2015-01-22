@@ -6,7 +6,6 @@ class Transaction
     @credit_card_number = my_data[:credit_card_number].to_i
     @authorization_result = my_data[:result]
     @parent = my_parent
-
   end
 
   def invoices
