@@ -18,32 +18,32 @@ class MerchantTest < MiniTest::Test
     assert_equal 7, merchant.id
   end
 
-  def test_it_stores_an_invoice_id_as_int_only
-    merchant = Merchant.new({:invoice_id => '45'}, nil)
-    assert_equal 45, merchant.invoice_id
+  def test_it_stores_a_name
+    merchant = Merchant.new({:name => 'Manny'}, nil)
+    assert_equal 'Manny', merchant.name
   end
 end
 
 class MerchantRepositoryTest < MiniTest::Test
 
-  def test_finds_nearest_by_invoice_id
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    @merchant_repo.collect_merchant
-    merchant = @merchant_repo.find_one_invoice_id(5)
-    assert_equal 5, merchant.invoice_id
+  def test_finds_nearest_by_id
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    @merchant_repo.collect_merchants
+    merchant = @merchant_repo.find_one_id(5)
+    assert_equal 5, merchant.id
   end
 
   def test_finds_nearest_by_authorization
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    @merchant_repo.collect_merchant
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    @merchant_repo.collect_merchants
     merchant = @merchant_repo.find_one_authorization("failed")
     assert_equal 6, merchant.invoice_id
     assert_equal "failed", merchant.authorization_result
   end
 
   def test_finds_nearest_by_credit_card_number
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    @merchant_repo.collect_merchant
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    @merchant_repo.collect_merchants
     merchant = @merchant_repo.find_one_credit_card_number(4140149827486249)
     assert_equal 10, merchant.invoice_id
     assert_equal 9, merchant.id
@@ -51,8 +51,8 @@ class MerchantRepositoryTest < MiniTest::Test
   end
 
   def test_finds_all_by_credit_card_number
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    @merchant_repo.collect_merchant
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    @merchant_repo.collect_merchants
     merchant = @merchant_repo.find_all_by_credit_card_number(4844518708741275)
     assert_equal 6, merchant.first.invoice_id
     assert_equal 5, merchant.first.id
@@ -66,8 +66,8 @@ class MerchantRepositoryTest < MiniTest::Test
   end
 
   def test_finds_all_by_authorization
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    @merchant_repo.collect_merchant
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    @merchant_repo.collect_merchants
     merchant = @merchant_repo.find_all_by_authorization("failed")
     assert_equal 6, merchant.first.invoice_id
     assert_equal 5, merchant.first.id
@@ -81,8 +81,8 @@ class MerchantRepositoryTest < MiniTest::Test
   end
 
   def test_finds_all_by_invoice_id
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    @merchant_repo.collect_merchant
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    @merchant_repo.collect_merchants
     merchant = @merchant_repo.find_all_by_invoice_id(10)
     assert_equal 10, merchant.first.invoice_id
     assert_equal 9, merchant.first.id
@@ -126,8 +126,8 @@ class MerchantIntegrationTest < MiniTest::Test
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
-    @merchant_repo = MerchantRepository.new("test/support/merchant_sample.csv")
-    merchant = @merchant_repo.collect_merchant
+    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
+    merchant = @merchant_repo.collect_merchants
     assert merchant.first.is_a?(Merchant)
   end
 
@@ -135,7 +135,7 @@ end
 
 class MerchantParserTest < MiniTest::Test
   def test_it_parses_a_csv_of_data
-    filename = "test/support/merchant_sample.csv"
+    filename = "test/support/merchants_sample.csv"
     parsed_merchants = MerchantParser.parse(filename)
 
     first = parsed_merchants.first
@@ -148,7 +148,7 @@ class MerchantParserTest < MiniTest::Test
   end
 
   def test_it_parses_credit_card_data
-    filename = "test/support/merchant_sample.csv"
+    filename = "test/support/merchants_sample.csv"
     parsed_merchants = MerchantParser.parse(filename)
 
     third = parsed_merchants[2]

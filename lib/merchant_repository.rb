@@ -12,39 +12,27 @@ class MerchantRepository
     @merchants = MerchantParser.parse(file_to_parse)
   end
 
-  def find_one_invoice_id(invoice_id_target)
+  def find_one_name(name_target)
     @merchants.find do |merchant|
-      merchant.invoice_id == invoice_id_target
+      merchant.name == name_target
     end
   end
 
-  def find_one_authorization(authorization_target)
+  def find_one_id(id_target)
     @merchants.find do |merchant|
-      merchant.authorization_result == authorization_target
+      merchant.id == id_target
     end
   end
 
-  def find_one_credit_card_number(credit_card_number_target)
-    @merchants.find do |merchant|
-      merchant.credit_card_number == credit_card_number_target
-    end
-  end
-
-  def find_all_by_invoice_id(invoice_id_target)
+  def find_all_by_name(name_target)
     @merchants.find_all do |merchant|
-      merchant.invoice_id == invoice_id_target
+      merchant.name == name_target
     end
   end
 
-  def find_all_by_authorization(authorization_target)
+  def find_all_by_id(id_target)
     @merchants.find_all do |merchant|
-      merchant.authorization_result == authorization_target
-    end
-  end
-
-  def find_all_by_credit_card_number(credit_card_number_target)
-    @merchants.find_all do |merchant|
-      merchant.credit_card_number == credit_card_number_target
+      merchant.id == id_target
     end
   end
 
