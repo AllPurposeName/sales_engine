@@ -18,149 +18,116 @@ class CustomerTest < MiniTest::Test
     assert_equal 7, customer.id
   end
 
-  def test_it_stores_an_invoice_id_as_int_only
-    customer = Customer.new({:invoice_id => '45'}, nil)
-    assert_equal 45, customer.invoice_id
+  def test_it_stores_a_first_name
+    customer = Customer.new({:first_name => 'Juan'}, nil)
+    assert_equal 'Juan', customer.first_name
+  end
+
+  def test_it_stores_a_last_name
+    customer = Customer.new({:last_name => 'Navarro'}, nil)
+    assert_equal 'Navarro', customer.last_name
   end
 end
 
 class CustomerRepositoryTest < MiniTest::Test
 
-  def test_finds_nearest_by_invoice_id
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+  def test_finds_nearest_by_id
+    @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_one_invoice_id(5)
-    assert_equal 5, customer.invoice_id
+    customer = @customer_repo.find_one_id(5)
+    assert_equal 5, customer.id
   end
 
-  def test_finds_nearest_by_authorization
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+  def test_finds_nearest_by_first_name
+    @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_one_authorization("failed")
-    assert_equal 6, customer.invoice_id
-    assert_equal "failed", customer.authorization_result
+    customer = @customer_repo.find_one_first_name('Loyal')
+    assert_equal 8, customer.id
+    assert_equal 'Loyal', customer.first_name
   end
 
-  def test_finds_nearest_by_credit_card_number
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+  def test_finds_nearest_by_last_name
+    @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_one_credit_card_number(4140149827486249)
-    assert_equal 10, customer.invoice_id
-    assert_equal 9, customer.id
-    assert_equal 4140149827486249, customer.credit_card_number
+    customer = @customer_repo.find_one_last_name('Considine')
+    assert_equal 8, customer.id
+    assert_equal 'Considine', customer.last_name
   end
 
-  def test_finds_all_by_credit_card_number
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+  def test_finds_all_by_first_name
+    @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_all_by_credit_card_number(4844518708741275)
-    assert_equal 6, customer.first.invoice_id
-    assert_equal 5, customer.first.id
-    assert_equal 4844518708741275, customer.first.credit_card_number
-    assert_equal "failed", customer.first.authorization_result
+    customer = @customer_repo.find_all_by_first_name("Joey")
+    assert_equal 1, customer[0].id
+    assert_equal "Joey", customer[0].first_name
 
-    assert_equal 10, customer[-1].invoice_id
-    assert_equal 10, customer[-1].id
-    assert_equal 4844518708741275, customer[-1].credit_card_number
-    assert_equal "success", customer[-1].authorization_result
+    customer = @customer_repo.find_all_by_first_name('Dejon')
+    assert_equal 9, customer[-1].id
+    assert_equal "Dejon", customer[-1].first_name
   end
 
-  def test_finds_all_by_authorization
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+  def test_finds_all_by_last_name
+    @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_all_by_authorization("failed")
-    assert_equal 6, customer.first.invoice_id
-    assert_equal 5, customer.first.id
-    assert_equal 4844518708741275, customer.first.credit_card_number
-    assert_equal "failed", customer.first.authorization_result
+    customer = @customer_repo.find_all_by_last_name('Ondricka')
+    assert_equal 1, customer[0].id
+    assert_equal 'Ondricka', customer[0].last_name
 
-    assert_equal 9, customer[-1].invoice_id
-    assert_equal 8, customer[-1].id
-    assert_equal 4540842003561938, customer[-1].credit_card_number
-    assert_equal "failed", customer[-1].authorization_result
+    customer = @customer_repo.find_all_by_last_name('Fadel')
+    assert_equal 9, customer[-1].id
+    assert_equal 'Fadel', customer[-1].last_name
   end
 
-  def test_finds_all_by_invoice_id
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+  def test_finds_all_by_id
+    @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_all_by_invoice_id(10)
-    assert_equal 10, customer.first.invoice_id
-    assert_equal 9, customer.first.id
-    assert_equal 4140149827486249, customer.first.credit_card_number
-    assert_equal "success", customer.first.authorization_result
+    customer = @customer_repo.find_all_by_id(2)
+    assert_equal 2, customer.first.id
+    assert_equal 'Osinski', customer.first.last_name
 
-    assert_equal 10, customer[-1].invoice_id
-    assert_equal 10, customer[-1].id
-    assert_equal 4844518708741275, customer[-1].credit_card_number
-    assert_equal "success", customer[-1].authorization_result
+    assert_equal 2, customer[-1].id
+    assert_equal 'Daugherty', customer[-1].last_name
   end
-
 end
 
 class FakeCustomerRepository
-  attr_accessor :invoices
+  attr_accessor :ids
 
-  def find_invoices_by_invoice_id(invoice_id)
-    @invoices
+  def find_invoices_by_id(id)
+    @ids
   end
 
 end
 
 class CustomerIntegrationTest < MiniTest::Test
-  def test_it_finds_related_invoice
+  def test_it_finds_related_id
     @customer_repo = FakeCustomerRepository.new
     data = {:id => "7"}
     @customer = Customer.new(data, @customer_repo)
 
-    invoices = Array.new(5){ Invoice.new }
-    @customer_repo.invoices = invoices
-    assert_equal invoices, @customer.invoices
-  end
-
-  def test_it_finds_related_credit_card_information
-    @customer_repo = FakeCustomerRepository.new
-    data = {:credit_card_number => 2155676888724409}
-    @customer = Customer.new(data, @customer_repo)
-    card_info = 2155676888724409
-    assert_equal card_info, @customer.credit_card_number
+    ids = Array.new(5){ Customer.new(data, @customer_repo) }
+    @customer_repo.ids = ids
+    assert_equal ids, @customer_repo.ids
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
-    @customer_repo = CustomerRepository.new("test/support/customer_sample.csv")
+    @customer_repo = CustomerRepository.new('test/support/customers_sample.csv')
     customer = @customer_repo.collect_customer
     assert customer.first.is_a?(Customer)
   end
-
 end
 
 class CustomerParserTest < MiniTest::Test
   def test_it_parses_a_csv_of_data
-    filename = "test/support/customer_sample.csv"
+    filename = "test/support/customers_sample.csv"
     parsed_customer = CustomerParser.parse(filename)
 
     first = parsed_customer.first
     assert_equal 1, first.id
-    assert_equal 1, first.invoice_id
+    assert_equal 'Ondricka', first.last_name
 
     fourth = parsed_customer[3]
     assert_equal 4, fourth.id
-    assert_equal 5, fourth.invoice_id
+    assert_equal 'Leanne', fourth.first_name
   end
-
-  def test_it_parses_credit_card_data
-    filename = "test/support/customer_sample.csv"
-    parsed_customer = CustomerParser.parse(filename)
-
-    third = parsed_customer[2]
-    assert_equal 4354495077693036, third.credit_card_number
-    assert_equal "success", third.authorization_result
-
-    fifth = parsed_customer[4]
-    assert_equal 4844518708741275, fifth.credit_card_number
-    assert_equal "failed", fifth.authorization_result
-  end
-
-
-
-
 end

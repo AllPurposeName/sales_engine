@@ -8,49 +8,49 @@ class CustomerRepository
     @customers = []
   end
 
-  def collect_customers
+  def collect_customer
     @customers = CustomerParser.parse(file_to_parse)
   end
 
-  def find_one_invoice_id(invoice_id_target)
+  def find_one_first_name(name_target)
     @customers.find do |customer|
-      customer.invoice_id == invoice_id_target
+      customer.first_name == name_target
     end
   end
 
-  def find_one_authorization(authorization_target)
+  def find_one_last_name(name_target)
     @customers.find do |customer|
-      customer.authorization_result == authorization_target
+      customer.last_name == name_target
     end
   end
 
-  def find_one_credit_card_number(credit_card_number_target)
+  def find_one_id(id_target)
     @customers.find do |customer|
-      customer.credit_card_number == credit_card_number_target
+      customer.id == id_target
     end
   end
 
-  def find_all_by_invoice_id(invoice_id_target)
+  def find_all_by_first_name(name_target)
     @customers.find_all do |customer|
-      customer.invoice_id == invoice_id_target
+      customer.first_name == name_target
     end
   end
 
-  def find_all_by_authorization(authorization_target)
+  def find_all_by_last_name(name_target)
     @customers.find_all do |customer|
-      customer.authorization_result == authorization_target
+      customer.last_name == name_target
     end
   end
 
-  def find_all_by_credit_card_number(credit_card_number_target)
+  def find_all_by_id(id_target)
     @customers.find_all do |customer|
-      customer.credit_card_number == credit_card_number_target
+      customer.id == id_target
     end
   end
 
   private
 
-  def all_customers
+  def all_merchants
     @customers
   end
 
