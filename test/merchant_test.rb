@@ -37,7 +37,7 @@ class MerchantRepositoryTest < MiniTest::Test
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
     @merchant_repo.collect_merchants
     merchant = @merchant_repo.find_one_name("Osinski, Pollich and Koelpin")
-    assert_equal 8, merchant.invoice_id
+    assert_equal 8, merchant.id
     assert_equal "Osinski, Pollich and Koelpin", merchant.name
   end
 
@@ -66,31 +66,23 @@ class MerchantRepositoryTest < MiniTest::Test
 end
 
 class FakeMerchantRepository
-  attr_accessor :invoices
+  attr_accessor :ids
 
-  def find_invoices_by_invoice_id(invoice_id)
-    @invoices
+  def find_invoices_by_id(id)
+    @ids
   end
 
 end
 
 class MerchantIntegrationTest < MiniTest::Test
-  def test_it_finds_related_invoice
+  def test_it_finds_related_id
     @merchant_repo = FakeMerchantRepository.new
     data = {:id => "7"}
     @merchant = Merchant.new(data, @merchant_repo)
 
-    invoices = Array.new(5){ Merchant.new }
-    @merchant_repo.invoices = invoices
-    assert_equal invoices, @merchant.invoices
-  end
-
-  def test_it_finds_related_credit_card_information
-    @merchant_repo = FakeMerchantRepository.new
-    data = {:credit_card_number => 2155676888724409}
-    @merchant = Merchant.new(data, @merchant_repo)
-    card_info = 2155676888724409
-    assert_equal card_info, @merchant.credit_card_number
+    ids = Array.new(5){ Merchant.new(data, @merchant_repo) }
+    @merchant_repo.ids = ids
+    assert_equal ids, @merchant_repo.ids
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
@@ -108,27 +100,10 @@ class MerchantParserTest < MiniTest::Test
 
     first = parsed_merchants.first
     assert_equal 1, first.id
-    assert_equal 1, first.invoice_id
+    assert_equal "Schroeder-Jerde", first.name
 
     fourth = parsed_merchants[3]
     assert_equal 4, fourth.id
-    assert_equal 5, fourth.invoice_id
+    assert_equal "Cummings-Thiel", fourth.name
   end
-
-  def test_it_parses_credit_card_data
-    filename = "test/support/merchants_sample.csv"
-    parsed_merchants = MerchantParser.parse(filename)
-
-    third = parsed_merchants[2]
-    assert_equal 4354495077693036, third.credit_card_number
-    assert_equal "success", third.authorization_result
-
-    fifth = parsed_merchants[4]
-    assert_equal 4844518708741275, fifth.credit_card_number
-    assert_equal "failed", fifth.authorization_result
-  end
-
-
-
-
 end
