@@ -33,66 +33,34 @@ class MerchantRepositoryTest < MiniTest::Test
     assert_equal 5, merchant.id
   end
 
-  def test_finds_nearest_by_authorization
+  def test_finds_nearest_by_name
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
     @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_one_authorization("failed")
-    assert_equal 6, merchant.invoice_id
-    assert_equal "failed", merchant.authorization_result
+    merchant = @merchant_repo.find_one_name("Osinski, Pollich and Koelpin")
+    assert_equal 8, merchant.invoice_id
+    assert_equal "Osinski, Pollich and Koelpin", merchant.name
   end
 
-  def test_finds_nearest_by_credit_card_number
+  def test_finds_all_by_name
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
     @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_one_credit_card_number(4140149827486249)
-    assert_equal 10, merchant.invoice_id
-    assert_equal 9, merchant.id
-    assert_equal 4140149827486249, merchant.credit_card_number
-  end
-
-  def test_finds_all_by_credit_card_number
-    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
-    @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_all_by_credit_card_number(4844518708741275)
-    assert_equal 6, merchant.first.invoice_id
+    merchant = @merchant_repo.find_all_by_name("Williamson Group")
     assert_equal 5, merchant.first.id
-    assert_equal 4844518708741275, merchant.first.credit_card_number
-    assert_equal "failed", merchant.first.authorization_result
+    assert_equal "Williamson Group", merchant.first.name
 
-    assert_equal 10, merchant[-1].invoice_id
-    assert_equal 10, merchant[-1].id
-    assert_equal 4844518708741275, merchant[-1].credit_card_number
-    assert_equal "success", merchant[-1].authorization_result
+    assert_equal 6, merchant[-1].id
+    assert_equal "Williamson Group", merchant[-1].name
   end
 
-  def test_finds_all_by_authorization
+  def test_finds_all_by__id
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
     @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_all_by_authorization("failed")
-    assert_equal 6, merchant.first.invoice_id
-    assert_equal 5, merchant.first.id
-    assert_equal 4844518708741275, merchant.first.credit_card_number
-    assert_equal "failed", merchant.first.authorization_result
+    merchant = @merchant_repo.find_all_by_id(7)
+    assert_equal 7, merchant.first.id
+    assert_equal "Bernhard-Johns", merchant.first.name
 
-    assert_equal 9, merchant[-1].invoice_id
-    assert_equal 8, merchant[-1].id
-    assert_equal 4540842003561938, merchant[-1].credit_card_number
-    assert_equal "failed", merchant[-1].authorization_result
-  end
-
-  def test_finds_all_by_invoice_id
-    @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
-    @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_all_by_invoice_id(10)
-    assert_equal 10, merchant.first.invoice_id
-    assert_equal 9, merchant.first.id
-    assert_equal 4140149827486249, merchant.first.credit_card_number
-    assert_equal "success", merchant.first.authorization_result
-
-    assert_equal 10, merchant[-1].invoice_id
-    assert_equal 10, merchant[-1].id
-    assert_equal 4844518708741275, merchant[-1].credit_card_number
-    assert_equal "success", merchant[-1].authorization_result
+    assert_equal 7, merchant[-1].id
+    assert_equal "Hand-Spencer", merchant[-1].name
   end
 
 end
