@@ -5,6 +5,7 @@ require_relative '../lib/invoice_item'
 require_relative '../lib/invoice_item_repository'
 require_relative '../lib/invoice_item'
 require_relative '../lib/invoice_item_parser'
+require_relative '../lib/item'
 
 class InvoiceItemTest < MiniTest::Test
 
@@ -146,12 +147,13 @@ class InvoiceItemIntegrationTest < MiniTest::Test
   end
 
   def test_it_finds_related_item_number
-    skip
     @invoice_item_repo = FakeInvoiceItemRepository.new
-    data = {:credit_card_number => 2155676888724409}
+    data = {:item_number => 529}
     @invoice_item = InvoiceItem.new(data, @invoice_item_repo)
-    card_info = 2155676888724409
-    assert_equal card_info, @invoice_item.credit_card_number
+
+    items = Array.new(5){ Item.new(data,@invoice_item_repo)}
+    @invoice_item_repo.items = items
+    assert_equal items, @invoice_item.items
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
