@@ -85,20 +85,21 @@ class InvoiceItemRepositoryTest < MiniTest::Test
     assert_equal 6, invoice_item[-1].quantity
   end
 
-  def test_finds_all_by_authorization
-    skip
+  def test_finds_all_by_quantity
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_all_by_authorization("failed")
-    assert_equal 6, invoice_item.first.invoice_id
-    assert_equal 5, invoice_item.first.id
-    assert_equal 4844518708741275, invoice_item.first.credit_card_number
-    assert_equal "failed", invoice_item.first.authorization_result
+    invoice_item = @invoice_item_repo.find_all_by_quantity(6)
+    assert_equal 8, invoice_item.first.id
+    assert_equal 1, invoice_item.first.invoice_id
+    assert_equal 534, invoice_item.first.item_id
+    assert_equal 76941, invoice_item.first.unit_price
+    assert_equal 6, invoice_item.first.quantity
 
-    assert_equal 9, invoice_item[-1].invoice_id
-    assert_equal 8, invoice_item[-1].id
-    assert_equal 4540842003561938, invoice_item[-1].credit_card_number
-    assert_equal "failed", invoice_item[-1].authorization_result
+    assert_equal 9, invoice_item[-1].id
+    assert_equal 2, invoice_item[-1].invoice_id
+    assert_equal 1832, invoice_item[-1].item_id
+    assert_equal 52100, invoice_item[-1].unit_price
+    assert_equal 6, invoice_item[-1].quantity
   end
 
   def test_finds_all_by_invoice_id
