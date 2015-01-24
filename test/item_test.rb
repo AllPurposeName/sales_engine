@@ -3,7 +3,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../lib/item'
 require_relative '../lib/item_repository'
-require_relative '../lib/invoice'
+# require_relative '../lib/invoice'
 require_relative '../lib/item_parser'
 
 class ItemTest < MiniTest::Test
@@ -18,149 +18,143 @@ class ItemTest < MiniTest::Test
     assert_equal 7, item.id
   end
 
-  def test_it_stores_an_invoice_id_as_int_only
-    item = Item.new({:invoice_id => '45'}, nil)
-    assert_equal 45, item.invoice_id
+  def test_it_stores_a_name
+    item = Item.new({:name => 'Manny'}, nil)
+    assert_equal 'Manny', item.name
+  end
+
+  def test_it_stores_a_description
+    item = Item.new({:description => 'Nihil autem sit odio inventore deleniti.'}, nil)
+    assert_equal 'Nihil autem sit odio inventore deleniti.', item.description
+  end
+
+  def test_it_stores_a_unit_price
+    item = Item.new({:unit_price => 75107}, nil)
+    assert_equal 75107, item.unit_price
   end
 end
 
 class ItemRepositoryTest < MiniTest::Test
 
-  def test_finds_nearest_by_invoice_id
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
+  def test_finds_nearest_by_item_id
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_invoice_id(5)
-    assert_equal 5, item.invoice_id
+    item = @item_repo.find_one_item_id(5)
+    assert_equal 5, item.id
   end
 
-  def test_finds_nearest_by_authorization
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
+  def test_finds_nearest_by_name
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_authorization("failed")
-    assert_equal 6, item.invoice_id
-    assert_equal "failed", item.authorization_result
+    item = @item_repo.find_one_by_name("Item Provident At")
+    assert_equal 6, item.id
+    assert_equal "Item Provident At", item.name
   end
 
-  def test_finds_nearest_by_credit_card_number
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
+  def test_finds_nearest_by_description
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_credit_card_number(4140149827486249)
-    assert_equal 10, item.invoice_id
-    assert_equal 9, item.id
-    assert_equal 4140149827486249, item.credit_card_number
+    item = @item_repo.find_one_by_description('Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.')
+    assert_equal 4, item.id
+    assert_equal 'Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.', item.description
   end
 
-  def test_finds_all_by_credit_card_number
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
+  def test_finds_nearest_by_unit_price
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    items = @item_repo.find_all_by_credit_card_number(4844518708741275)
-    assert_equal 6, items.first.invoice_id
-    assert_equal 5, items.first.id
-    assert_equal 4844518708741275, items.first.credit_card_number
-    assert_equal "failed", items.first.authorization_result
-
-    assert_equal 10, items[-1].invoice_id
-    assert_equal 10, items[-1].id
-    assert_equal 4844518708741275, items[-1].credit_card_number
-    assert_equal "success", items[-1].authorization_result
+    item = @item_repo.find_one_by_unit_price(31163)
+    assert_equal 7, item.id
+    assert_equal 31163, item.unit_price
   end
 
-  def test_finds_all_by_authorization
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
-    @item_repo.collect_items
-    items = @item_repo.find_all_by_authorization("failed")
-    assert_equal 6, items.first.invoice_id
-    assert_equal 5, items.first.id
-    assert_equal 4844518708741275, items.first.credit_card_number
-    assert_equal "failed", items.first.authorization_result
+  # def test_finds_nearest_by_merchant
+  #   @item_repo = ItemRepository.new("test/support/items_sample.csv")
+  #   @item_repo.collect_items
+  #   item = @item_repo.find_one_by_merchant(1)
+  #   assert_equal 5, item.id
+  #   assert_equal 1, item.merchant_id
+  # end
 
-    assert_equal 9, items[-1].invoice_id
-    assert_equal 8, items[-1].id
-    assert_equal 4540842003561938, items[-1].credit_card_number
-    assert_equal "failed", items[-1].authorization_result
+  def test_finds_all_by_id
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
+    @item_repo.collect_items
+    item = @item_repo.find_all_by_item_id(1)
+    assert_equal 1, item.first.id
+    assert_equal 'Item Qui Esse', item.first.name
   end
 
-  def test_finds_all_by_invoice_id
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
+  def test_finds_nearest_by_name
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    items = @item_repo.find_all_by_invoice_id(10)
-    assert_equal 10, items.first.invoice_id
-    assert_equal 9, items.first.id
-    assert_equal 4140149827486249, items.first.credit_card_number
-    assert_equal "success", items.first.authorization_result
-
-    assert_equal 10, items[-1].invoice_id
-    assert_equal 10, items[-1].id
-    assert_equal 4844518708741275, items[-1].credit_card_number
-    assert_equal "success", items[-1].authorization_result
+    item = @item_repo.find_one_by_name("Item Provident At")
+    assert_equal 6, item.id
+    assert_equal "Item Provident At", item.name
   end
+
+  def test_finds_nearest_by_description
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
+    @item_repo.collect_items
+    item = @item_repo.find_one_by_description('Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.')
+    assert_equal 4, item.id
+    assert_equal 'Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.', item.description
+  end
+
+  def test_finds_nearest_by_unit_price
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
+    @item_repo.collect_items
+    item = @item_repo.find_one_by_unit_price(31163)
+    assert_equal 7, item.id
+    assert_equal 31163, item.unit_price
+  end
+
+  # def test_finds_nearest_by_merchant
+  #   @item_repo = ItemRepository.new("test/support/items_sample.csv")
+  #   @item_repo.collect_items
+  #   item = @item_repo.find_one_by_merchant_id(1)
+  #   assert_equal 5, item.id
+  #   assert_equal 1, item.merchant_id
+  # end
 
 end
 
 class FakeItemRepository
-  attr_accessor :invoices
+  attr_accessor :item
 
   def find_invoices_by_invoice_id(invoice_id)
-    @invoices
+    @item
   end
 
 end
 
 class ItemIntegrationTest < MiniTest::Test
-  def test_it_finds_related_invoice
+  def test_it_finds_related_id
     @item_repo = FakeItemRepository.new
     data = {:id => "7"}
     @item = Item.new(data, @item_repo)
 
-    invoices = Array.new(5){ Invoice.new }
-    @item_repo.invoices = invoices
-    assert_equal invoices, @item.invoices
-  end
-
-  def test_it_finds_related_credit_card_information
-    @item_repo = FakeItemRepository.new
-    data = {:credit_card_number => 2155676888724409}
-    @item = Item.new(data, @item_repo)
-    card_info = 2155676888724409
-    assert_equal card_info, @item.credit_card_number
+    item = Array.new(5){ Item.new(data, @item_repo) }
+    @item_repo.item = item
+    assert_equal item, @item_repo.item
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
-    @item_repo = ItemRepository.new("test/support/item_sample.csv")
-    items = @item_repo.collect_items
-    assert items.first.is_a?(Item)
+    @item_repo = ItemRepository.new("test/support/items_sample.csv")
+    item = @item_repo.collect_items
+    assert item.first.is_a?(Item)
   end
-
 end
 
 class ItemParserTest < MiniTest::Test
   def test_it_parses_a_csv_of_data
-    filename = "test/support/item_sample.csv"
-    parsed_items = ItemParser.parse(filename)
+    filename = "test/support/items_sample.csv"
+    parsed_item = ItemParser.parse(filename)
 
-    first = parsed_items.first
+    first = parsed_item.first
     assert_equal 1, first.id
-    assert_equal 1, first.invoice_id
+    assert_equal 'Item Qui Esse', first.name
 
-    fourth = parsed_items[3]
+    fourth = parsed_item[3]
     assert_equal 4, fourth.id
-    assert_equal 5, fourth.invoice_id
+    assert_equal 'Item Nemo Facere', fourth.name
   end
-
-  def test_it_parses_credit_card_data
-    filename = "test/support/item_sample.csv"
-    parsed_items = ItemParser.parse(filename)
-
-    third = parsed_items[2]
-    assert_equal 4354495077693036, third.credit_card_number
-    assert_equal "success", third.authorization_result
-
-    fifth = parsed_items[4]
-    assert_equal 4844518708741275, fifth.credit_card_number
-    assert_equal "failed", fifth.authorization_result
-  end
-
-
-
-
 end
