@@ -30,9 +30,9 @@ class InvoiceItemRepository
     end
   end
 
-  def find_one_credit_card_number(credit_card_number_target)
+  def find_one_unit_price(unit_price_target)
     @invoice_items.find do |invoice_item|
-      invoice_item.credit_card_number == credit_card_number_target
+      invoice_item.unit_price == unit_price_target
     end
   end
 
@@ -42,9 +42,9 @@ class InvoiceItemRepository
     end
   end
 
-  def find_all_by_authorization(authorization_target)
+  def find_all_by_unit_price(unit_price_target)
     @invoice_items.find_all do |invoice_item|
-      invoice_item.authorization == authorization_target
+      invoice_item.unit_price == unit_price_target
     end
   end
 

@@ -5,7 +5,7 @@ class InvoiceItem
     @invoice_id = my_data[:invoice_id].to_i
     @item_id = my_data[:item_id].to_i
     @quantity = my_data[:quantity].to_i
-    @unit_price = my_data[:unit_price]
+    @unit_price = my_data[:unit_price].to_i
     @parent = my_parent
   end
 
