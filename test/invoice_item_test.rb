@@ -122,27 +122,30 @@ class InvoiceItemRepositoryTest < MiniTest::Test
 end
 
 class FakeInvoiceItemRepository
-  attr_accessor :invoices
+  attr_accessor :invoices, :items
 
-  def find_invoices_by_invoice_id(invoice_id)
+  def find_invoice_by_invoice_id(invoice_id)
     @invoices
+  end
+
+  def find_items_by_item_id(item_id)
+    @items
   end
 
 end
 
 class InvoiceItemIntegrationTest < MiniTest::Test
   def test_it_finds_related_invoice
-    skip
     @invoice_item_repo = FakeInvoiceItemRepository.new
     data = {:id => "7"}
     @invoice_item = InvoiceItem.new(data, @invoice_item_repo)
 
-    invoices = Array.new(5){ Invoice.new }
+    invoices = Array.new(5){ InvoiceItem.new(data, @invoice_item_repo) }
     @invoice_item_repo.invoices = invoices
     assert_equal invoices, @invoice_item.invoices
   end
 
-  def test_it_finds_related_credit_card_information
+  def test_it_finds_related_item_number
     skip
     @invoice_item_repo = FakeInvoiceItemRepository.new
     data = {:credit_card_number => 2155676888724409}
