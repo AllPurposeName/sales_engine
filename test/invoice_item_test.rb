@@ -157,7 +157,6 @@ class InvoiceItemIntegrationTest < MiniTest::Test
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
-    skip
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     invoice_item = @invoice_item_repo.collect_invoice_items
     assert invoice_item.first.is_a?(InvoiceItem)
@@ -167,31 +166,31 @@ end
 
 class InvoiceItemParserTest < MiniTest::Test
   def test_it_parses_a_csv_of_data
-    skip
     filename = "test/support/invoice_items_sample.csv"
     parsed_invoice_items = InvoiceItemParser.parse(filename)
 
     first = parsed_invoice_items.first
     assert_equal 1, first.id
-    assert_equal 1, first.invoice_id
+    assert_equal 539, first.item_id
+    assert_equal 2, first.invoice_id
 
     fourth = parsed_invoice_items[3]
     assert_equal 4, fourth.id
-    assert_equal 5, fourth.invoice_id
+    assert_equal 535, fourth.item_id
+    assert_equal 1, fourth.invoice_id
   end
 
-  def test_it_parses_credit_card_data
-    skip
+  def test_it_parses_unit_price
     filename = "test/support/invoice_items_sample.csv"
     parsed_invoice_items = InvoiceItemParser.parse(filename)
 
     third = parsed_invoice_items[2]
-    assert_equal 4354495077693036, third.credit_card_number
-    assert_equal "success", third.authorization_result
+    assert_equal 34873, third.unit_price
+    assert_equal 8, third.quantity
 
     fifth = parsed_invoice_items[4]
-    assert_equal 4844518708741275, fifth.credit_card_number
-    assert_equal "failed", fifth.authorization_result
+    assert_equal 79140, fifth.unit_price
+    assert_equal 7, fifth.quantity
   end
 
 
