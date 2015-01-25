@@ -13,5 +13,4 @@ class Item
   def invoices
     @parent.find_invoices_by_invoice_id(@invoice_id)
   end
-
 end

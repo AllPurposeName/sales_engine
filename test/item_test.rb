@@ -70,7 +70,7 @@ class ItemRepositoryTest < MiniTest::Test
   # def test_finds_nearest_by_merchant
   #   @item_repo = ItemRepository.new("test/support/items_sample.csv")
   #   @item_repo.collect_items
-  #   item = @item_repo.find_one_by_merchant(1)
+  #   item = @item_repo.find_one_by_merchant_id(1)
   #   assert_equal 5, item.id
   #   assert_equal 1, item.merchant_id
   # end
