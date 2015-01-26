@@ -12,41 +12,72 @@ class InvoiceRepository
     @invoices = InvoiceParser.parse(file_to_parse)
   end
 
-  def find_one_invoice_id(invoice_id_target)
+  def find_one_invoices_id(invoices_id_target)
     @invoices.find do |invoice|
-      invoice.invoice_id == invoice_id_target
+      invoice.invoices_id == invoices_id_target
     end
   end
 
-  def find_one_authorization(authorization_target)
+  def find_one_customer_id(customer_id_target)
     @invoices.find do |invoice|
-      invoice.authorization_result == authorization_target
+      invoice.customer_id == customer_id_target
     end
   end
 
-  def find_one_credit_card_number(credit_card_number_target)
+  def find_one_merchant_id(merchant_id_target)
     @invoices.find do |invoice|
-      invoice.credit_card_number == credit_card_number_target
+      invoice.merchant_id == merchant_id_target
     end
   end
 
-  def find_all_by_invoice_id(invoice_id_target)
-    @invoices.find_all do |invoice|
-      invoice.invoice_id == invoice_id_target
+  def find_one_status(status_target)
+    @invoices.find do |invoice|
+      invoice.status == status_target
     end
   end
 
-  def find_all_by_authorization(authorization_target)
-    @invoices.find_all do |invoice|
-      invoice.authorization_result == authorization_target
+  def find_one_created_at(created_at_target)
+    @invoices.find do |invoice|
+      invoice.created_at == created_at_target
     end
   end
 
-  def find_all_by_credit_card_number(credit_card_number_target)
-    @invoices.find_all do |invoice|
-      invoice.credit_card_number == credit_card_number_target
+  def find_one_updated_at(updated_at_target)
+    @invoices.find do |invoice|
+      invoice.updated_at == updated_at_target
     end
   end
+
+  def find_all_by_invoices_id(invoices_id_target)
+    @invoices.find_all do |invoice|
+      invoice.invoices_id == invoices_id_target
+    end
+  end
+
+  def find_all_by_customer_id(customer_id_target)
+    @invoices.find_all do |invoice|
+      invoice.customer_id == customer_id_target
+    end
+  end
+
+  def find_all_by_merchant_id(merchant_id_target)
+    @invoices.find_all do |invoice|
+      invoice.merchant_id == merchant_id_target
+    end
+  end
+
+  def find_all_by_created_at(created_at_target)
+    @invoices.find_all do |invoice|
+      invoice.created_at == created_at_target
+    end
+  end
+
+  def find_all_by_updated_at(updated_at_target)
+    @invoices.find_all do |invoice|
+      invoice.updated_at == updated_at_target
+    end
+  end
+
 
   private
 

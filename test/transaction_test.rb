@@ -111,8 +111,9 @@ class TransactionIntegrationTest < MiniTest::Test
     @transaction_repo = FakeTransactionRepository.new
     data = {:id => "7"}
     @transaction = Transaction.new(data, @transaction_repo)
+    other_data = {:invoices_id => "7"}
 
-    invoices = Array.new(5){ Invoice.new }
+    invoices = Array.new(5){ Invoice.new(other_data, nil) }
     @transaction_repo.invoices = invoices
     assert_equal invoices, @transaction.invoices
   end
