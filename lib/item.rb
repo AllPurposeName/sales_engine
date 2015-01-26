@@ -1,15 +1,16 @@
 class Item
-  attr_reader :id, :invoice_id, :credit_card_number, :authorization_result
+  attr_reader :id, :name, :description, :unit_price, :merchant_id
+
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i
-    @invoice_id = my_data[:invoice_id].to_i
-    @credit_card_number = my_data[:credit_card_number].to_i
-    @authorization_result = my_data[:result]
+    @name = my_data[:name]
+    @description = my_data[:description]
+    @unit_price = my_data[:unit_price].to_i
+    @merchant_id = my_data[:merchant_id]
     @parent = my_parent
   end
 
   def invoices
     @parent.find_invoices_by_invoice_id(@invoice_id)
   end
-
 end

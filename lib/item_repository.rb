@@ -8,45 +8,70 @@ class ItemRepository
     @items = []
   end
 
-  def collect_transactions
+  def collect_items
     @items = ItemParser.parse(file_to_parse)
   end
 
-  def find_one_invoice_id(invoice_id_target)
+  def find_one_item_id(item_id_target)
     @items.find do |item|
-      item.invoice_id == invoice_id_target
+      item.id == item_id_target
     end
   end
 
-  def find_one_authorization(authorization_target)
+  def find_one_by_name(name_target)
     @items.find do |item|
-      item.authorization_result == authorization_target
+      item.name == name_target
     end
   end
 
-  def find_one_credit_card_number(credit_card_number_target)
+  def find_one_by_description(description_target)
     @items.find do |item|
-      item.credit_card_number == credit_card_number_target
+      item.description == description_target
     end
   end
 
-  def find_all_by_invoice_id(invoice_id_target)
-    @items.find_all do |item|
-      item.invoice_id == invoice_id_target
+  def find_one_by_unit_price(description_target)
+    @items.find do |item|
+      item.unit_price == description_target
     end
   end
 
-  def find_all_by_authorization(authorization_target)
-    @items.find_all do |item|
-      item.authorization_result == authorization_target
+  def find_one_by_merchant_id(merchant_target)
+    @items.find do |item|
+      item.merchant_id == merchant_target
     end
   end
 
-  def find_all_by_credit_card_number(credit_card_number_target)
+  def find_all_by_item_id(item_id_target)
     @items.find_all do |item|
-      item.credit_card_number == credit_card_number_target
+      item.id == item_id_target
     end
   end
+
+  def find_all_by_item_name(name_target)
+    @items.find_all do |item|
+      item.name == name_target
+    end
+  end
+
+  def find_all_by_item_description(description_target)
+    @items.find_all do |item|
+      item.description == description_target
+    end
+  end
+
+  def find_all_by_unit_price(unit_price_target)
+    @items.find_all do |item|
+      item.unit_price == unit_price_target
+    end
+  end
+
+  def find_all_by_merchant_id(merchant_target)
+    @items.find_all do |item|
+      item.merchant_id == merchant_target
+    end
+  end
+
 
   private
 
