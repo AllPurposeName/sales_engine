@@ -53,5 +53,5 @@ end
   def all_transactions
     @transactions
   end
-
+ 
 end
