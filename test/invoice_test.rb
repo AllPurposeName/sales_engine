@@ -14,7 +14,6 @@ class InvoiceTest < MiniTest::Test
   end
 
   def test_it_stores_an_id_as_int_only
-  skip
     invoice = Invoice.new({:id => '7'}, nil)
     assert_equal 7, invoice.id
   end
