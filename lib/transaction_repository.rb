@@ -12,29 +12,41 @@ class TransactionRepository
     @transactions = TransactionParser.parse(file_to_parse)
   end
 
-  def find_one_invoice_id(invoice_id_target)
+  def find_one_by_id(id_target)
+    @transactions.find do |transaction|
+      transaction.id == id_target
+    end
+  end
+
+  def find_one_by_invoice_id(invoice_id_target)
     @transactions.find do |transaction|
       transaction.invoice_id == invoice_id_target
     end
   end
 
-  def find_one_authorization(authorization_target)
+  def find_one_by_authorization(authorization_target)
     @transactions.find do |transaction|
       transaction.authorization_result == authorization_target
     end
   end
 
-  def find_one_credit_card_number(credit_card_number_target)
+  def find_one_by_credit_card_number(credit_card_number_target)
     @transactions.find do |transaction|
       transaction.credit_card_number == credit_card_number_target
+    end
+  end
+
+  def find_all_by_id(id_target)
+    @transactions.find_all do |transaction|
+      transaction.id == id_target
     end
   end
 
   def find_all_by_invoice_id(invoice_id_target)
     @transactions.find_all do |transaction|
       transaction.invoice_id == invoice_id_target
+    end
   end
-end
 
   def find_all_by_authorization(authorization_target)
     @transactions.find_all do |transaction|
@@ -53,5 +65,9 @@ end
   def all_transactions
     @transactions
   end
- 
+
+  def random_transaction
+    @transactions.sample
+  end
+
 end

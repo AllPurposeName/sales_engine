@@ -34,14 +34,14 @@ class CustomerRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_id
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_one_id(5)
+    customer = @customer_repo.find_one_by_id(5)
     assert_equal 5, customer.id
   end
 
   def test_finds_nearest_by_first_name
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_one_first_name('Loyal')
+    customer = @customer_repo.find_one_by_first_name('Loyal')
     assert_equal 8, customer.id
     assert_equal 'Loyal', customer.first_name
   end
@@ -49,7 +49,7 @@ class CustomerRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_last_name
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
     @customer_repo.collect_customer
-    customer = @customer_repo.find_one_last_name('Considine')
+    customer = @customer_repo.find_one_by_last_name('Considine')
     assert_equal 8, customer.id
     assert_equal 'Considine', customer.last_name
   end

@@ -12,19 +12,19 @@ class CustomerRepository
     @customers = CustomerParser.parse(file_to_parse)
   end
 
-  def find_one_first_name(name_target)
+  def find_one_by_first_name(name_target)
     @customers.find do |customer|
       customer.first_name == name_target
     end
   end
 
-  def find_one_last_name(name_target)
+  def find_one_by_last_name(name_target)
     @customers.find do |customer|
       customer.last_name == name_target
     end
   end
 
-  def find_one_id(id_target)
+  def find_one_by_id(id_target)
     @customers.find do |customer|
       customer.id == id_target
     end
@@ -54,4 +54,7 @@ class CustomerRepository
     @customers
   end
 
+  def random_customer
+    @customers.sample
+  end
 end

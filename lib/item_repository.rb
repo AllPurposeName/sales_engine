@@ -12,9 +12,9 @@ class ItemRepository
     @items = ItemParser.parse(file_to_parse)
   end
 
-  def find_one_item_id(item_id_target)
+  def find_one_by_id(id_target)
     @items.find do |item|
-      item.id == item_id_target
+      item.id == id_target
     end
   end
 
@@ -30,9 +30,9 @@ class ItemRepository
     end
   end
 
-  def find_one_by_unit_price(description_target)
+  def find_one_by_unit_price(unit_price_target)
     @items.find do |item|
-      item.unit_price == description_target
+      item.unit_price == unit_price_target
     end
   end
 
@@ -42,19 +42,19 @@ class ItemRepository
     end
   end
 
-  def find_all_by_item_id(item_id_target)
+  def find_all_by_id(item_id_target)
     @items.find_all do |item|
       item.id == item_id_target
     end
   end
 
-  def find_all_by_item_name(name_target)
+  def find_all_by_name(name_target)
     @items.find_all do |item|
       item.name == name_target
     end
   end
 
-  def find_all_by_item_description(description_target)
+  def find_all_by_description(description_target)
     @items.find_all do |item|
       item.description == description_target
     end
@@ -79,4 +79,7 @@ class ItemRepository
     @items
   end
 
+  def random_item
+    @items.sample
+  end
 end

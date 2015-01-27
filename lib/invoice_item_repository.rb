@@ -12,25 +12,25 @@ class InvoiceItemRepository
     @invoice_items = InvoiceItemParser.parse(file_to_parse)
   end
 
-  def find_one_item_id(item_id_target)
+  def find_one_by_item_id(item_id_target)
     @invoice_items.find do |invoice_item|
       invoice_item.item_id == item_id_target
     end
   end
 
-  def find_one_quantity(quantity_target)
+  def find_one_by_quantity(quantity_target)
     @invoice_items.find do |invoice_item|
       invoice_item.quantity == quantity_target
     end
   end
 
-  def find_one_invoice_id(invoice_id_target)
+  def find_one_by_invoice_id(invoice_id_target)
     @invoice_items.find do |invoice_item|
       invoice_item.invoice_id == invoice_id_target
     end
   end
 
-  def find_one_unit_price(unit_price_target)
+  def find_one_by_unit_price(unit_price_target)
     @invoice_items.find do |invoice_item|
       invoice_item.unit_price == unit_price_target
     end
@@ -64,6 +64,10 @@ class InvoiceItemRepository
 
   def all_invoice_items
     @invoice_items
+  end
+
+  def random_invoice_item
+    @invoice_items.sample
   end
 
 end

@@ -12,37 +12,37 @@ class InvoiceRepository
     @invoices = InvoiceParser.parse(file_to_parse)
   end
 
-  def find_one_invoices_id(invoices_id_target)
+  def find_one_by_invoices_id(invoices_id_target)
     @invoices.find do |invoice|
       invoice.invoices_id == invoices_id_target
     end
   end
 
-  def find_one_customer_id(customer_id_target)
+  def find_one_by_customer_id(customer_id_target)
     @invoices.find do |invoice|
       invoice.customer_id == customer_id_target
     end
   end
 
-  def find_one_merchant_id(merchant_id_target)
+  def find_one_by_merchant_id(merchant_id_target)
     @invoices.find do |invoice|
       invoice.merchant_id == merchant_id_target
     end
   end
 
-  def find_one_status(status_target)
+  def find_one_by_status(status_target)
     @invoices.find do |invoice|
       invoice.status == status_target
     end
   end
 
-  def find_one_created_at(created_at_target)
+  def find_one_by_created_at(created_at_target)
     @invoices.find do |invoice|
       invoice.created_at == created_at_target
     end
   end
 
-  def find_one_updated_at(updated_at_target)
+  def find_one_by_updated_at(updated_at_target)
     @invoices.find do |invoice|
       invoice.updated_at == updated_at_target
     end
@@ -66,6 +66,12 @@ class InvoiceRepository
     end
   end
 
+  def find_all_by_status(status_target)
+    @invoices.find_all do |invoice|
+      invoice.status == status_target
+    end
+  end
+
   def find_all_by_created_at(created_at_target)
     @invoices.find_all do |invoice|
       invoice.created_at == created_at_target
@@ -85,4 +91,7 @@ class InvoiceRepository
     @invoices
   end
 
+  def random_invoice
+    @invoices.sample
+  end
 end

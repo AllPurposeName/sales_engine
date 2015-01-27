@@ -36,10 +36,10 @@ end
 
 class ItemRepositoryTest < MiniTest::Test
 
-  def test_finds_nearest_by_item_id
+  def test_finds_nearest_by_id
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_item_id(5)
+    item = @item_repo.find_one_by_id(5)
     assert_equal 5, item.id
   end
 
@@ -54,9 +54,10 @@ class ItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_description
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_description('Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.')
-    assert_equal 4, item.id
-    assert_equal 'Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.', item.description
+    long_ass_description = "Nihil autem sit odio inventore deleniti. Est laudantium ratione distinctio laborum. Minus voluptatem nesciunt assumenda dicta voluptatum porro."
+    item = @item_repo.find_one_by_description(long_ass_description)
+    assert_equal 1, item.id
+    assert_equal long_ass_description, item.description
   end
 
   def test_finds_nearest_by_unit_price
@@ -66,55 +67,59 @@ class ItemRepositoryTest < MiniTest::Test
     assert_equal 7, item.id
     assert_equal 31163, item.unit_price
   end
-
-  # def test_finds_nearest_by_merchant
-  #   @item_repo = ItemRepository.new("test/support/items_sample.csv")
-  #   @item_repo.collect_items
-  #   item = @item_repo.find_one_by_merchant_id(1)
-  #   assert_equal 5, item.id
-  #   assert_equal 1, item.merchant_id
-  # end
 
   def test_finds_all_by_id
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_all_by_item_id(1)
+    item = @item_repo.find_all_by_id(1)
     assert_equal 1, item.first.id
     assert_equal 'Item Qui Esse', item.first.name
+    assert_equal 75107, item.first.unit_price
+
+    assert_equal 1, item.last.id
+    assert_equal 'Item Autem Minima', item.last.name
+    assert_equal 67076, item.last.unit_price
   end
 
-  def test_finds_nearest_by_name
+  def test_finds_all_by_name
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_name("Item Provident At")
-    assert_equal 6, item.id
-    assert_equal "Item Provident At", item.name
+    items = @item_repo.find_all_by_name("Item Expedita")
+    assert_equal 5, items.first.id
+    assert_equal 68723, items.first.unit_price
+    assert_equal "Item Expedita", items.first.name
+
+    assert_equal 7, items.last.id
+    assert_equal 31163, items.last.unit_price
+    assert_equal "Item Expedita", items.last.name
   end
 
-  def test_finds_nearest_by_description
+  def test_finds_all_by_description
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_description('Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.')
-    assert_equal 4, item.id
-    assert_equal 'Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem.', item.description
+    long_ass_latin_description = "Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem."
+    item = @item_repo.find_all_by_description(long_ass_latin_description)
+    assert_equal 3, item.first.id
+    assert_equal 32301, item.first.unit_price
+    assert_equal long_ass_latin_description, item.first.description
+
+    assert_equal 4, item.last.id
+    assert_equal 4291, item.last.unit_price
+    assert_equal long_ass_latin_description, item.last.description
   end
 
-  def test_finds_nearest_by_unit_price
+  def test_finds_all_by_unit_price
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_unit_price(31163)
-    assert_equal 7, item.id
-    assert_equal 31163, item.unit_price
+    item = @item_repo.find_all_by_unit_price(22582)
+    assert_equal 8, item.first.id
+    assert_equal 22582, item.first.unit_price
+    assert_equal "Item Est Consequuntur", item.first.name
+
+    assert_equal 9, item.last.id
+    assert_equal 22582, item.last.unit_price
+    assert_equal "Item Quo Magnam", item.last.name
   end
-
-  # def test_finds_nearest_by_merchant
-  #   @item_repo = ItemRepository.new("test/support/items_sample.csv")
-  #   @item_repo.collect_items
-  #   item = @item_repo.find_one_by_merchant_id(1)
-  #   assert_equal 5, item.id
-  #   assert_equal 1, item.merchant_id
-  # end
-
 end
 
 class FakeItemRepository
@@ -123,7 +128,6 @@ class FakeItemRepository
   def find_invoices_by_invoice_id(invoice_id)
     @item
   end
-
 end
 
 class ItemIntegrationTest < MiniTest::Test

@@ -36,14 +36,14 @@ class InvoiceItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_invoice_id
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_one_invoice_id(2)
+    invoice_item = @invoice_item_repo.find_one_by_invoice_id(2)
     assert_equal 2, invoice_item.invoice_id
   end
 
   def test_finds_nearest_by_item_id
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_one_item_id(535)
+    invoice_item = @invoice_item_repo.find_one_by_item_id(535)
     assert_equal 1, invoice_item.invoice_id
     assert_equal 535, invoice_item.item_id
     assert_equal 4, invoice_item.id
@@ -52,7 +52,7 @@ class InvoiceItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_quantity
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_one_quantity(4)
+    invoice_item = @invoice_item_repo.find_one_by_quantity(4)
     assert_equal 7, invoice_item.id
     assert_equal 1, invoice_item.invoice_id
     assert_equal 530, invoice_item.item_id
@@ -62,7 +62,7 @@ class InvoiceItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_unit_price
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_one_unit_price(34873)
+    invoice_item = @invoice_item_repo.find_one_by_unit_price(34873)
     assert_equal 1, invoice_item.invoice_id
     assert_equal 3, invoice_item.id
     assert_equal 8, invoice_item.quantity

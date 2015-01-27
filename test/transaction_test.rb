@@ -29,14 +29,14 @@ class TransactionRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_invoice_id
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_one_invoice_id(5)
+    transaction = @transaction_repo.find_one_by_invoice_id(5)
     assert_equal 5, transaction.invoice_id
   end
 
   def test_finds_nearest_by_authorization
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_one_authorization("failed")
+    transaction = @transaction_repo.find_one_by_authorization("failed")
     assert_equal 6, transaction.invoice_id
     assert_equal "failed", transaction.authorization_result
   end
@@ -44,7 +44,7 @@ class TransactionRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_credit_card_number
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_one_credit_card_number(4140149827486249)
+    transaction = @transaction_repo.find_one_by_credit_card_number(4140149827486249)
     assert_equal 10, transaction.invoice_id
     assert_equal 9, transaction.id
     assert_equal 4140149827486249, transaction.credit_card_number

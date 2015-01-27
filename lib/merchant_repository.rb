@@ -12,13 +12,13 @@ class MerchantRepository
     @merchants = MerchantParser.parse(file_to_parse)
   end
 
-  def find_one_name(name_target)
+  def find_one_by_name(name_target)
     @merchants.find do |merchant|
       merchant.name == name_target
     end
   end
 
-  def find_one_id(id_target)
+  def find_one_by_id(id_target)
     @merchants.find do |merchant|
       merchant.id == id_target
     end
@@ -36,10 +36,18 @@ class MerchantRepository
     end
   end
 
+  def find_invoice_by_merchant_id(id_target)
+    @parent.invoice_repository.find_one_by_merchant_id(id_target)
+  end
+
   private
 
   def all_merchants
     @merchants
+  end
+
+  def random_merchant
+    @merchants.sample
   end
 
 end

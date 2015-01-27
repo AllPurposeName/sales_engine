@@ -31,14 +31,14 @@ class InvoiceRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_invoices_id
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_one_invoices_id(5)
+    invoice = @invoice_repo.find_one_by_invoices_id(5)
     assert_equal 5, invoice.invoices_id
   end
 
   def test_finds_nearest_by_customer_id
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_one_customer_id(1)
+    invoice = @invoice_repo.find_one_by_customer_id(1)
     assert_equal 1, invoice.invoices_id
     assert_equal 1, invoice.customer_id
   end
@@ -46,7 +46,7 @@ class InvoiceRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_merchant_id
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_one_merchant_id(78)
+    invoice = @invoice_repo.find_one_by_merchant_id(78)
     assert_equal 3, invoice.invoices_id
     assert_equal 1, invoice.customer_id
     assert_equal 78, invoice.merchant_id
@@ -55,7 +55,7 @@ class InvoiceRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_status
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_one_status("shipped")
+    invoice = @invoice_repo.find_one_by_status("shipped")
     assert_equal 1, invoice.invoices_id
     assert_equal 1, invoice.customer_id
     assert_equal 26, invoice.merchant_id
@@ -66,7 +66,7 @@ class InvoiceRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_created_at
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_one_created_at("2012-03-12 05:54:09 UTC")
+    invoice = @invoice_repo.find_one_by_created_at("2012-03-12 05:54:09 UTC")
     assert_equal 2, invoice.invoices_id
     assert_equal 1, invoice.customer_id
     assert_equal 75, invoice.merchant_id
@@ -76,7 +76,7 @@ class InvoiceRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_updated_at
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_one_updated_at("2012-03-07 19:54:10 UTC")
+    invoice = @invoice_repo.find_one_by_updated_at("2012-03-07 19:54:10 UTC")
     assert_equal 5, invoice.invoices_id
     assert_equal 1, invoice.customer_id
     assert_equal 44, invoice.merchant_id
