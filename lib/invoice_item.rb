@@ -17,4 +17,7 @@ class InvoiceItem
     @parent.find_items_by_item_id(@item_id)
   end
 
+  def items
+    @parent.find_items_by_item_id(@item_id)
+  end
 end

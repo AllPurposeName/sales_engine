@@ -20,4 +20,9 @@ class InvoiceItemRepository
   def collect_invoice_items
     @group = InvoiceItemParser.parse(file_to_parse, self)
   end
+
+
+  def find_items_by_item_id(id)
+    @parent.item_repository.find_all_by_item_id(id)
+  end
 end

@@ -1,5 +1,5 @@
 class Invoice
-  attr_reader :invoices_id,
+  attr_reader :id,
               :customer_id,
               :merchant_id,
               :status,
@@ -8,7 +8,7 @@ class Invoice
               :parent
 
   def initialize(my_data, my_parent)
-    @invoices_id = my_data[:invoices_id].to_i
+    @id = my_data[:id].to_i
     @customer_id = my_data[:customer_id].to_i
     @merchant_id = my_data[:merchant_id].to_i
     @status = my_data[:status]
@@ -18,7 +18,7 @@ class Invoice
   end
 
   def transaction
-    @parent.find_transactions_by_invoices_id(@invoices_id)
+    @parent.find_transactions_by_invoices_id(@id)
   end
 
   def customer
@@ -30,7 +30,7 @@ class Invoice
   end
 
   def invoice_item
-    @parent.find_invoice_items_by_invoices_id(@invoices_id)
+    @parent.find_invoice_items_by_invoices_id(@id)
   end
 
 end

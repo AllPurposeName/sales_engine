@@ -11,4 +11,8 @@ class Customer
   def invoice
     @parent.find_invoice_by_customer_id(@id)
   end
+
+  def invoices
+    @parent.find_invoices_by_customer_id(@id)
+  end
 end

@@ -135,6 +135,7 @@ def find_by_unit_price(unit_price_target)
   end
 end
 
+
 def find_all_by_item_id(item_id_target)
   @group.find_all do |invoice_item|
     invoice_item.item_id == item_id_target
@@ -161,7 +162,7 @@ end
 
 
 
-def find_by_invoices_id(invoices_id_target)
+def find_by_id(invoices_id_target)
   @group.find do |invoice|
     invoice.invoices_id == invoices_id_target
   end
@@ -197,7 +198,7 @@ def find_by_updated_at(updated_at_target)
   end
 end
 
-def find_all_by_invoices_id(invoices_id_target)
+def find_all_by_id(invoices_id_target)
   @group.find_all do |invoice|
     invoice.invoices_id == invoices_id_target
   end
@@ -307,6 +308,6 @@ end
 #   @group.invoice_repository.find_by_merchant_id(id_target)
 # end
 #
-# def find_invoices_by_invoice_id(id_target)
+# def find_by_invoice_id(id_target)
 #   @group.invoice_repository.find_by_invoice_id(id_target)
 # end

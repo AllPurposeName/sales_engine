@@ -11,11 +11,11 @@ require_relative '../lib/invoice_parser'
 class InvoiceTest < MiniTest::Test
 
   def test_it_stores_ids_as_int_only
-    invoice = Invoice.new({:invoices_id => 8,
+    invoice = Invoice.new({:id => 8,
                            :customer_id => 2,
                            :merchant_id => 83},
                             nil)
-    assert_equal 8, invoice.invoices_id
+    assert_equal 8, invoice.id
     assert_equal 2, invoice.customer_id
     assert_equal 83, invoice.merchant_id
   end
@@ -28,18 +28,18 @@ end
 
 class InvoiceRepositoryTest < MiniTest::Test
 
-  def test_finds_nearest_by_invoices_id
+  def test_finds_nearest_by_id
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_by_invoices_id(5)
-    assert_equal 5, invoice.invoices_id
+    invoice = @invoice_repo.find_by_id(5)
+    assert_equal 5, invoice.id
   end
 
   def test_finds_nearest_by_customer_id
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_by_customer_id(1)
-    assert_equal 1, invoice.invoices_id
+    assert_equal 1, invoice.id
     assert_equal 1, invoice.customer_id
   end
 
@@ -47,7 +47,7 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_by_merchant_id(78)
-    assert_equal 3, invoice.invoices_id
+    assert_equal 3, invoice.id
     assert_equal 1, invoice.customer_id
     assert_equal 78, invoice.merchant_id
   end
@@ -56,7 +56,7 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_by_status("shipped")
-    assert_equal 1, invoice.invoices_id
+    assert_equal 1, invoice.id
     assert_equal 1, invoice.customer_id
     assert_equal 26, invoice.merchant_id
     assert_equal "shipped", invoice.status
@@ -67,7 +67,7 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_by_created_at("2012-03-12 05:54:09 UTC")
-    assert_equal 2, invoice.invoices_id
+    assert_equal 2, invoice.id
     assert_equal 1, invoice.customer_id
     assert_equal 75, invoice.merchant_id
     assert_equal "2012-03-12 05:54:09 UTC", invoice.created_at
@@ -77,22 +77,22 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_by_updated_at("2012-03-07 19:54:10 UTC")
-    assert_equal 5, invoice.invoices_id
+    assert_equal 5, invoice.id
     assert_equal 1, invoice.customer_id
     assert_equal 44, invoice.merchant_id
     assert_equal "2012-03-07 19:54:10 UTC", invoice.updated_at
   end
 
-  def test_finds_all_by_invoices_id
+  def test_finds_all_by_id
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
-    invoice = @invoice_repo.find_all_by_invoices_id(6)
-    assert_equal 6, invoice.first.invoices_id
+    invoice = @invoice_repo.find_all_by_id(6)
+    assert_equal 6, invoice.first.id
     assert_equal 1, invoice.first.customer_id
     assert_equal 76, invoice.first.merchant_id
     assert_equal "shipped", invoice.first.status
 
-    assert_equal 6, invoice[-1].invoices_id
+    assert_equal 6, invoice[-1].id
     assert_equal 1, invoice[-1].customer_id
     assert_equal 44, invoice[-1].merchant_id
     assert_equal "shipped", invoice[-1].status
@@ -102,12 +102,12 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_all_by_customer_id(2)
-    assert_equal 8, invoice.first.invoices_id
+    assert_equal 8, invoice.first.id
     assert_equal 2, invoice.first.customer_id
     assert_equal 38, invoice.first.merchant_id
     assert_equal "shipped", invoice.first.status
 
-    assert_equal 9, invoice[-1].invoices_id
+    assert_equal 9, invoice[-1].id
     assert_equal 2, invoice[-1].customer_id
     assert_equal 27, invoice[-1].merchant_id
     assert_equal "pending", invoice[-1].status
@@ -117,12 +117,12 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_all_by_merchant_id(44)
-    assert_equal 5, invoice.first.invoices_id
+    assert_equal 5, invoice.first.id
     assert_equal 1, invoice.first.customer_id
     assert_equal 44, invoice.first.merchant_id
     assert_equal "pending", invoice.first.status
 
-    assert_equal 6, invoice[-1].invoices_id
+    assert_equal 6, invoice[-1].id
     assert_equal 1, invoice[-1].customer_id
     assert_equal 44, invoice[-1].merchant_id
     assert_equal "shipped", invoice[-1].status
@@ -132,13 +132,13 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_all_by_created_at("2012-03-12 05:54:09 UTC")
-    assert_equal 2, invoice.first.invoices_id
+    assert_equal 2, invoice.first.id
     assert_equal 1, invoice.first.customer_id
     assert_equal 75, invoice.first.merchant_id
     assert_equal "shipped", invoice.first.status
     assert_equal "2012-03-12 05:54:09 UTC", invoice.first.created_at
 
-    assert_equal 3, invoice[-1].invoices_id
+    assert_equal 3, invoice[-1].id
     assert_equal 1, invoice[-1].customer_id
     assert_equal 78, invoice[-1].merchant_id
     assert_equal "shipped", invoice[-1].status
@@ -149,13 +149,13 @@ class InvoiceRepositoryTest < MiniTest::Test
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
     @invoice_repo.collect_invoices
     invoice = @invoice_repo.find_all_by_updated_at("2012-03-07 12:54:10 UTC")
-    assert_equal 6, invoice.first.invoices_id
+    assert_equal 6, invoice.first.id
     assert_equal 1, invoice.first.customer_id
     assert_equal 44, invoice.first.merchant_id
     assert_equal "shipped", invoice.first.status
     assert_equal "2012-03-07 12:54:10 UTC", invoice.first.updated_at
 
-    assert_equal 9, invoice[-1].invoices_id
+    assert_equal 9, invoice[-1].id
     assert_equal 2, invoice[-1].customer_id
     assert_equal 27, invoice[-1].merchant_id
     assert_equal "pending", invoice[-1].status
@@ -170,7 +170,7 @@ class FakeInvoiceRepository
                 :merchants,
                 :invoice_items
 
-  def find_transactions_by_invoices_id(invoices_id)
+  def find_transactions_by_invoices_id(id)
     @transactions
   end
 
@@ -182,7 +182,7 @@ class FakeInvoiceRepository
     @merchants
   end
 
-  def find_invoice_items_by_invoices_id(invoices_id)
+  def find_invoice_items_by_invoices_id(id)
     @invoice_items
   end
 end
@@ -190,7 +190,7 @@ end
 class InvoiceIntegrationTest < MiniTest::Test
   def test_it_finds_related_transaction
     @invoice_repo = FakeInvoiceRepository.new
-    data = {:invoices_id => "7"}
+    data = {:id => "7"}
     @invoice = Invoice.new(data, @invoice_repo)
     other_data = {:id => "7"}
 
@@ -223,7 +223,7 @@ class InvoiceIntegrationTest < MiniTest::Test
 
   def test_it_finds_related_invoice_item
     @invoice_repo = FakeInvoiceRepository.new
-    data = {:invoices_id => "3"}
+    data = {:id => "3"}
     @invoice = Invoice.new(data, @invoice_repo)
     other_data = {:id => "3"}
 
@@ -247,11 +247,11 @@ class InvoiceParserTest < MiniTest::Test
     parsed_invoices = InvoiceParser.parse(filename)
 
     first = parsed_invoices.first
-    assert_equal 1, first.invoices_id
+    assert_equal 1, first.id
     assert_equal 26, first.merchant_id
 
     fourth = parsed_invoices[3]
-    assert_equal 4, fourth.invoices_id
+    assert_equal 4, fourth.id
     assert_equal 33, fourth.merchant_id
   end
 

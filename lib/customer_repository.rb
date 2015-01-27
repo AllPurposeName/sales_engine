@@ -16,6 +16,10 @@ class CustomerRepository
     collect_customers
   end
 
+  def find_invoices_by_customer_id(id)
+    @parent.invoice_repository.find_all_by_customer_id(id)
+  end
+
   def collect_customers
     @group = CustomerParser.parse(file_to_parse, self)
   end
