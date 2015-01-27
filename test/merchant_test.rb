@@ -87,8 +87,9 @@ class MerchantIntegrationTest < MiniTest::Test
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
-    merchant = @merchant_repo.collect_merchants
-    assert merchant.first.is_a?(Merchant)
+    merchants = @merchant_repo.collect_merchants
+    assert merchants.first.is_a?(Merchant)
+    assert_equal @merchant_repo, merchants.first.parent
   end
 
 end

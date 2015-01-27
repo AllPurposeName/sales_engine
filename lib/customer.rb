@@ -1,5 +1,5 @@
 class Customer
-  attr_reader :id, :first_name, :last_name
+  attr_reader :id, :first_name, :last_name, :parent
 
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i

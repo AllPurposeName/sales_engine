@@ -9,7 +9,7 @@ class CustomerRepository
   end
 
   def collect_customer
-    @customers = CustomerParser.parse(file_to_parse)
+    @customers = CustomerParser.parse(file_to_parse, self)
   end
 
   def find_one_by_first_name(name_target)
@@ -50,7 +50,7 @@ class CustomerRepository
 
   private
 
-  def all_merchants
+  def all_customers
     @customers
   end
 

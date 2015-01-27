@@ -9,7 +9,7 @@ class InvoiceItemRepository
   end
 
   def collect_invoice_items
-    @invoice_items = InvoiceItemParser.parse(file_to_parse)
+    @invoice_items = InvoiceItemParser.parse(file_to_parse, self)
   end
 
   def find_one_by_item_id(item_id_target)

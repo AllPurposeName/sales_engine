@@ -143,8 +143,9 @@ class ItemIntegrationTest < MiniTest::Test
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
-    item = @item_repo.collect_items
-    assert item.first.is_a?(Item)
+    items = @item_repo.collect_items
+    assert items.first.is_a?(Item)
+    assert_equal @item_repo, items.first.parent
   end
 end
 

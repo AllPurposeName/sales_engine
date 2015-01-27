@@ -1,5 +1,5 @@
 class Item
-  attr_reader :id, :name, :description, :unit_price, :merchant_id
+  attr_reader :id, :name, :description, :unit_price, :merchant_id, :parent
 
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i

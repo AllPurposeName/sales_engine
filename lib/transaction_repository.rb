@@ -9,7 +9,7 @@ class TransactionRepository
   end
 
   def collect_transactions
-    @transactions = TransactionParser.parse(file_to_parse)
+    @transactions = TransactionParser.parse(file_to_parse, self)
   end
 
   def find_one_by_id(id_target)

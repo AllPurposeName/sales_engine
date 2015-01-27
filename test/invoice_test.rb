@@ -234,8 +234,9 @@ class InvoiceIntegrationTest < MiniTest::Test
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
     @invoice_repo = InvoiceRepository.new("test/support/invoices_sample.csv")
-    invoice = @invoice_repo.collect_invoices
-    assert invoice.first.is_a?(Invoice)
+    invoices = @invoice_repo.collect_invoices
+    assert invoices.first.is_a?(Invoice)
+    assert_equal @invoice_repo, invoices.first.parent
   end
 
 end

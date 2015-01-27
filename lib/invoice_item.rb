@@ -1,5 +1,5 @@
 class InvoiceItem
-  attr_reader :id, :invoice_id, :item_id, :quantity, :unit_price
+  attr_reader :id, :invoice_id, :item_id, :quantity, :unit_price, :parent
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i
     @invoice_id = my_data[:invoice_id].to_i
@@ -14,7 +14,7 @@ class InvoiceItem
   end
 
   def items
-      @parent.find_items_by_item_id(@item_id)
+    @parent.find_items_by_item_id(@item_id)
   end
 
 end

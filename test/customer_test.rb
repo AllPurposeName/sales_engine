@@ -112,8 +112,9 @@ class CustomerIntegrationTest < MiniTest::Test
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
     @customer_repo = CustomerRepository.new('test/support/customers_sample.csv')
-    customer = @customer_repo.collect_customer
-    assert customer.first.is_a?(Customer)
+    customers = @customer_repo.collect_customer
+    assert customers.first.is_a?(Customer)
+    assert_equal @customer_repo, customers.first.parent
   end
 end
 

@@ -9,7 +9,7 @@ class InvoiceRepository
   end
 
   def collect_invoices
-    @invoices = InvoiceParser.parse(file_to_parse)
+    @invoices = InvoiceParser.parse(file_to_parse, self)
   end
 
   def find_one_by_invoices_id(invoices_id_target)

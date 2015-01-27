@@ -9,7 +9,7 @@ class ItemRepository
   end
 
   def collect_items
-    @items = ItemParser.parse(file_to_parse)
+    @items = ItemParser.parse(file_to_parse, self)
   end
 
   def find_one_by_id(id_target)
@@ -75,7 +75,7 @@ class ItemRepository
 
   private
 
-  def all_transactions
+  def all_items
     @items
   end
 

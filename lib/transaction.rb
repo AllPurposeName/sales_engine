@@ -1,5 +1,5 @@
 class Transaction
-  attr_reader :id, :invoice_id, :credit_card_number, :authorization_result
+  attr_reader :id, :invoice_id, :credit_card_number, :authorization_result, :parent
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i
     @invoice_id = my_data[:invoice_id].to_i

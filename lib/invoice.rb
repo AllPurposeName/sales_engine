@@ -4,7 +4,8 @@ class Invoice
               :merchant_id,
               :status,
               :created_at,
-              :updated_at
+              :updated_at,
+              :parent
 
   def initialize(my_data, my_parent)
     @invoices_id = my_data[:invoices_id].to_i

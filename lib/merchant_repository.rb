@@ -9,7 +9,7 @@ class MerchantRepository
   end
 
   def collect_merchants
-    @merchants = MerchantParser.parse(file_to_parse)
+    @merchants = MerchantParser.parse(file_to_parse, self)
   end
 
   def find_one_by_name(name_target)

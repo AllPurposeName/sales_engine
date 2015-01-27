@@ -130,6 +130,7 @@ class TransactionIntegrationTest < MiniTest::Test
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     transactions = @transaction_repo.collect_transactions
     assert transactions.first.is_a?(Transaction)
+    assert_equal @transaction_repo, transactions.first.parent
   end
 
 end
