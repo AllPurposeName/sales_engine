@@ -8,7 +8,7 @@ class Customer
     @parent = my_parent
   end
 
-  def invoices
+  def invoice
     @parent.find_invoice_by_customer_id(@id)
   end
 end

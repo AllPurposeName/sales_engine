@@ -1,73 +1,25 @@
 require'pry'
+require_relative '../lib/relationships'
+require_relative '../lib/transaction_parser'
+
 class TransactionRepository
+  include Relationships
   attr_reader :file_to_parse
+
+  def inspect
+    "#<#{self.class} #{@group.size} rows>"
+  end
 
   def initialize(filename, our_sales_engine=nil)
     @file_to_parse = filename
     @sales_engine = our_sales_engine
-    @transactions = []
+    @group = []
+    collect_transactions
   end
 
   def collect_transactions
-    @transactions = TransactionParser.parse(file_to_parse, self)
+    @group = TransactionParser.parse(file_to_parse, self)
   end
 
-  def find_one_by_id(id_target)
-    @transactions.find do |transaction|
-      transaction.id == id_target
-    end
-  end
-
-  def find_one_by_invoice_id(invoice_id_target)
-    @transactions.find do |transaction|
-      transaction.invoice_id == invoice_id_target
-    end
-  end
-
-  def find_one_by_authorization(authorization_target)
-    @transactions.find do |transaction|
-      transaction.authorization_result == authorization_target
-    end
-  end
-
-  def find_one_by_credit_card_number(credit_card_number_target)
-    @transactions.find do |transaction|
-      transaction.credit_card_number == credit_card_number_target
-    end
-  end
-
-  def find_all_by_id(id_target)
-    @transactions.find_all do |transaction|
-      transaction.id == id_target
-    end
-  end
-
-  def find_all_by_invoice_id(invoice_id_target)
-    @transactions.find_all do |transaction|
-      transaction.invoice_id == invoice_id_target
-    end
-  end
-
-  def find_all_by_authorization(authorization_target)
-    @transactions.find_all do |transaction|
-      transaction.authorization_result == authorization_target
-    end
-  end
-
-  def find_all_by_credit_card_number(credit_card_number_target)
-    @transactions.find_all do |transaction|
-    transaction.credit_card_number == credit_card_number_target
-  end
-end
-
-  private
-
-  def all_transactions
-    @transactions
-  end
-
-  def random_transaction
-    @transactions.sample
-  end
 
 end

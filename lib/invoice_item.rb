@@ -9,11 +9,11 @@ class InvoiceItem
     @parent = my_parent
   end
 
-  def invoices
+  def invoice
     @parent.find_invoice_by_invoice_id(@invoice_id)
   end
 
-  def items
+  def item
     @parent.find_items_by_item_id(@item_id)
   end
 

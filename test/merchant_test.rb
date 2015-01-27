@@ -29,14 +29,14 @@ class MerchantRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_id
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
     @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_one_by_id(5)
+    merchant = @merchant_repo.find_by_id(5)
     assert_equal 5, merchant.id
   end
 
   def test_finds_nearest_by_name
     @merchant_repo = MerchantRepository.new("test/support/merchants_sample.csv")
     @merchant_repo.collect_merchants
-    merchant = @merchant_repo.find_one_by_name("Osinski, Pollich and Koelpin")
+    merchant = @merchant_repo.find_by_name("Osinski, Pollich and Koelpin")
     assert_equal 8, merchant.id
     assert_equal "Osinski, Pollich and Koelpin", merchant.name
   end

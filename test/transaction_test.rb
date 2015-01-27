@@ -29,22 +29,22 @@ class TransactionRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_invoice_id
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_one_by_invoice_id(5)
+    transaction = @transaction_repo.find_by_invoice_id(5)
     assert_equal 5, transaction.invoice_id
   end
 
-  def test_finds_nearest_by_authorization
+  def test_finds_nearest_by_result
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_one_by_authorization("failed")
+    transaction = @transaction_repo.find_by_result("failed")
     assert_equal 6, transaction.invoice_id
-    assert_equal "failed", transaction.authorization_result
+    assert_equal "failed", transaction.result
   end
 
   def test_finds_nearest_by_credit_card_number
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_one_by_credit_card_number(4140149827486249)
+    transaction = @transaction_repo.find_by_credit_card_number(4140149827486249)
     assert_equal 10, transaction.invoice_id
     assert_equal 9, transaction.id
     assert_equal 4140149827486249, transaction.credit_card_number
@@ -57,27 +57,27 @@ class TransactionRepositoryTest < MiniTest::Test
     assert_equal 6, transactions.first.invoice_id
     assert_equal 5, transactions.first.id
     assert_equal 4844518708741275, transactions.first.credit_card_number
-    assert_equal "failed", transactions.first.authorization_result
+    assert_equal "failed", transactions.first.result
 
     assert_equal 10, transactions[-1].invoice_id
     assert_equal 10, transactions[-1].id
     assert_equal 4844518708741275, transactions[-1].credit_card_number
-    assert_equal "success", transactions[-1].authorization_result
+    assert_equal "success", transactions[-1].result
   end
 
-  def test_finds_all_by_authorization
+  def test_finds_all_by_result
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transactions = @transaction_repo.find_all_by_authorization("failed")
+    transactions = @transaction_repo.find_all_by_result("failed")
     assert_equal 6, transactions.first.invoice_id
     assert_equal 5, transactions.first.id
     assert_equal 4844518708741275, transactions.first.credit_card_number
-    assert_equal "failed", transactions.first.authorization_result
+    assert_equal "failed", transactions.first.result
 
     assert_equal 9, transactions[-1].invoice_id
     assert_equal 8, transactions[-1].id
     assert_equal 4540842003561938, transactions[-1].credit_card_number
-    assert_equal "failed", transactions[-1].authorization_result
+    assert_equal "failed", transactions[-1].result
   end
 
   def test_finds_all_by_invoice_id
@@ -87,12 +87,12 @@ class TransactionRepositoryTest < MiniTest::Test
     assert_equal 10, transactions.first.invoice_id
     assert_equal 9, transactions.first.id
     assert_equal 4140149827486249, transactions.first.credit_card_number
-    assert_equal "success", transactions.first.authorization_result
+    assert_equal "success", transactions.first.result
 
     assert_equal 10, transactions[-1].invoice_id
     assert_equal 10, transactions[-1].id
     assert_equal 4844518708741275, transactions[-1].credit_card_number
-    assert_equal "success", transactions[-1].authorization_result
+    assert_equal "success", transactions[-1].result
   end
 
 end
@@ -115,7 +115,7 @@ class TransactionIntegrationTest < MiniTest::Test
 
     invoices = Array.new(5){ Invoice.new(other_data, nil) }
     @transaction_repo.invoices = invoices
-    assert_equal invoices, @transaction.invoices
+    assert_equal invoices, @transaction.invoice
   end
 
   def test_it_finds_related_credit_card_information
@@ -155,11 +155,11 @@ class TransactionParserTest < MiniTest::Test
 
     third = parsed_transactions[2]
     assert_equal 4354495077693036, third.credit_card_number
-    assert_equal "success", third.authorization_result
+    assert_equal "success", third.result
 
     fifth = parsed_transactions[4]
     assert_equal 4844518708741275, fifth.credit_card_number
-    assert_equal "failed", fifth.authorization_result
+    assert_equal "failed", fifth.result
   end
 
 

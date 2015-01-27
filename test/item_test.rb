@@ -39,14 +39,14 @@ class ItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_id
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_id(5)
+    item = @item_repo.find_by_id(5)
     assert_equal 5, item.id
   end
 
   def test_finds_nearest_by_name
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_name("Item Provident At")
+    item = @item_repo.find_by_name("Item Provident At")
     assert_equal 6, item.id
     assert_equal "Item Provident At", item.name
   end
@@ -55,7 +55,7 @@ class ItemRepositoryTest < MiniTest::Test
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
     long_ass_description = "Nihil autem sit odio inventore deleniti. Est laudantium ratione distinctio laborum. Minus voluptatem nesciunt assumenda dicta voluptatum porro."
-    item = @item_repo.find_one_by_description(long_ass_description)
+    item = @item_repo.find_by_description(long_ass_description)
     assert_equal 1, item.id
     assert_equal long_ass_description, item.description
   end
@@ -63,7 +63,7 @@ class ItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_unit_price
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_one_by_unit_price(31163)
+    item = @item_repo.find_by_unit_price(31163)
     assert_equal 7, item.id
     assert_equal 31163, item.unit_price
   end
