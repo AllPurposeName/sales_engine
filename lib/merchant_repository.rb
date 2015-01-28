@@ -1,8 +1,10 @@
 require'pry'
 require_relative '../lib/relationships'
 require_relative '../lib/merchant_parser'
+require_relative '../lib/business_intelligence'
 
 class MerchantRepository
+  include BusinessIntelligence
   include Relationships
   attr_reader :file_to_parse, :sales_engine
 

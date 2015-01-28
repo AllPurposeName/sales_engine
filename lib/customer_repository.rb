@@ -1,8 +1,9 @@
 require'pry'
 require_relative '../lib/relationships'
 require_relative '../lib/customer_parser'
-
+require_relative '../lib/business_intelligence'
 class CustomerRepository
+  include BusinessIntelligence
   include Relationships
   attr_reader :file_to_parse
   def inspect
@@ -16,11 +17,12 @@ class CustomerRepository
     collect_customers
   end
 
-  def find_invoices_by_customer_id(id)
-    @parent.invoice_repository.find_all_by_customer_id(id)
-  end
-
   def collect_customers
     @group = CustomerParser.parse(file_to_parse, self)
   end
+
+  def find_invoices_by_customer_id(id)
+    @sales_engine.invoice_repository.find_all_by_customer_id(id)
+  end
+
 end

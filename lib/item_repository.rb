@@ -1,8 +1,10 @@
 require'pry'
 require_relative '../lib/relationships'
 require_relative '../lib/item_parser'
+require_relative '../lib/business_intelligence'
 
 class ItemRepository
+  include BusinessIntelligence
   include Relationships
   attr_reader :file_to_parse
 

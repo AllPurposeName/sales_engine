@@ -1,8 +1,10 @@
 require'pry'
 require_relative '../lib/relationships'
 require_relative '../lib/transaction_parser'
+require_relative '../lib/business_intelligence'
 
 class TransactionRepository
+  include BusinessIntelligence
   include Relationships
   attr_reader :file_to_parse
 
@@ -20,6 +22,5 @@ class TransactionRepository
   def collect_transactions
     @group = TransactionParser.parse(file_to_parse, self)
   end
-
 
 end
