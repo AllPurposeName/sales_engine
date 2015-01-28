@@ -1,5 +1,5 @@
 class Customer
-  attr_reader :id, :first_name, :last_name
+  attr_reader :id, :first_name, :last_name, :parent
 
   def initialize(my_data, my_parent)
     @id = my_data[:id].to_i
@@ -8,7 +8,11 @@ class Customer
     @parent = my_parent
   end
 
-  def item
-    @parent.find_item_by_customer_id(@id)
+  def invoice
+    @parent.find_invoice_by_customer_id(@id)
+  end
+
+  def invoices
+    @parent.find_invoices_by_customer_id(@id)
   end
 end

@@ -33,30 +33,30 @@ class CustomerRepositoryTest < MiniTest::Test
 
   def test_finds_nearest_by_id
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
-    @customer_repo.collect_customer
-    customer = @customer_repo.find_one_id(5)
+    @customer_repo.collect_customers
+    customer = @customer_repo.find_by_id(5)
     assert_equal 5, customer.id
   end
 
   def test_finds_nearest_by_first_name
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
-    @customer_repo.collect_customer
-    customer = @customer_repo.find_one_first_name('Loyal')
+    @customer_repo.collect_customers
+    customer = @customer_repo.find_by_first_name('Loyal')
     assert_equal 8, customer.id
     assert_equal 'Loyal', customer.first_name
   end
 
   def test_finds_nearest_by_last_name
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
-    @customer_repo.collect_customer
-    customer = @customer_repo.find_one_last_name('Considine')
+    @customer_repo.collect_customers
+    customer = @customer_repo.find_by_last_name('Considine')
     assert_equal 8, customer.id
     assert_equal 'Considine', customer.last_name
   end
 
   def test_finds_all_by_first_name
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
-    @customer_repo.collect_customer
+    @customer_repo.collect_customers
     customer = @customer_repo.find_all_by_first_name("Joey")
     assert_equal 1, customer[0].id
     assert_equal "Joey", customer[0].first_name
@@ -68,7 +68,7 @@ class CustomerRepositoryTest < MiniTest::Test
 
   def test_finds_all_by_last_name
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
-    @customer_repo.collect_customer
+    @customer_repo.collect_customers
     customer = @customer_repo.find_all_by_last_name('Ondricka')
     assert_equal 1, customer[0].id
     assert_equal 'Ondricka', customer[0].last_name
@@ -80,7 +80,7 @@ class CustomerRepositoryTest < MiniTest::Test
 
   def test_finds_all_by_id
     @customer_repo = CustomerRepository.new("test/support/customers_sample.csv")
-    @customer_repo.collect_customer
+    @customer_repo.collect_customers
     customer = @customer_repo.find_all_by_id(2)
     assert_equal 2, customer.first.id
     assert_equal 'Osinski', customer.first.last_name
@@ -112,8 +112,9 @@ class CustomerIntegrationTest < MiniTest::Test
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo
     @customer_repo = CustomerRepository.new('test/support/customers_sample.csv')
-    customer = @customer_repo.collect_customer
-    assert customer.first.is_a?(Customer)
+    customers = @customer_repo.collect_customers
+    assert customers.first.is_a?(Customer)
+    assert_equal @customer_repo, customers.first.parent
   end
 end
 

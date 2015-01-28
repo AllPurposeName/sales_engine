@@ -1,57 +1,24 @@
 require'pry'
+require_relative '../lib/relationships'
+require_relative '../lib/invoice_parser'
+
 class InvoiceRepository
+  include Relationships
   attr_reader :file_to_parse
+
+  def inspect
+    "#<#{self.class} #{@group.size} rows>"
+  end
 
   def initialize(filename, our_sales_engine=nil)
     @file_to_parse = filename
     @sales_engine = our_sales_engine
-    @invoices = []
+    @group = []
+    collect_invoices
   end
 
   def collect_invoices
-    @invoices = InvoiceParser.parse(file_to_parse)
-  end
-
-  def find_one_invoice_id(invoice_id_target)
-    @invoices.find do |invoice|
-      invoice.invoice_id == invoice_id_target
-    end
-  end
-
-  def find_one_authorization(authorization_target)
-    @invoices.find do |invoice|
-      invoice.authorization_result == authorization_target
-    end
-  end
-
-  def find_one_credit_card_number(credit_card_number_target)
-    @invoices.find do |invoice|
-      invoice.credit_card_number == credit_card_number_target
-    end
-  end
-
-  def find_all_by_invoice_id(invoice_id_target)
-    @invoices.find_all do |invoice|
-      invoice.invoice_id == invoice_id_target
-    end
-  end
-
-  def find_all_by_authorization(authorization_target)
-    @invoices.find_all do |invoice|
-      invoice.authorization_result == authorization_target
-    end
-  end
-
-  def find_all_by_credit_card_number(credit_card_number_target)
-    @invoices.find_all do |invoice|
-      invoice.credit_card_number == credit_card_number_target
-    end
-  end
-
-  private
-
-  def all_invoices
-    @invoices
+    @group = InvoiceParser.parse(file_to_parse, self)
   end
 
 end
