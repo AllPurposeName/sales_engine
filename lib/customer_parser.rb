@@ -3,7 +3,7 @@ require_relative '../lib/customer'
 class CustomerParser
   attr_reader :filename
 
-  def self.parse(queued_file, our_repo=nil)
+  def parse(queued_file, our_repo=nil)
     new(queued_file, our_repo).create_customers
   end
 

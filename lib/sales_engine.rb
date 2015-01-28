@@ -12,7 +12,7 @@ class SalesEngine
               :item_repository,
               :merchant_repository,
               :transaction_repository
-  def initialize(file_path)
+  def initialize(file_path = "../data")
     @file_path = file_path
     startup
   end
@@ -25,4 +25,5 @@ class SalesEngine
     @merchant_repository = MerchantRepository.new("#{@file_path}/merchants.csv", self)
     @transaction_repository = TransactionRepository.new("#{@file_path}/transactions.csv", self)
   end
+
 end
