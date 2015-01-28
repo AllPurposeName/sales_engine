@@ -12,7 +12,8 @@ class SalesEngine
               :item_repository,
               :merchant_repository,
               :transaction_repository
-  def initialize(file_path = "../data")
+
+  def initialize(file_path = "./data")
     @file_path = file_path
     startup
   end
