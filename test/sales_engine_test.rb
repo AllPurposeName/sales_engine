@@ -42,5 +42,4 @@ class SalesEngineTest < Minitest::Test
     sales_engine.startup
     assert sales_engine.transaction_repository
   end
-
 end
