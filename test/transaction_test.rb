@@ -44,24 +44,24 @@ class TransactionRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_credit_card_number
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transaction = @transaction_repo.find_by_credit_card_number(4140149827486249)
+    transaction = @transaction_repo.find_by_credit_card_number("4140149827486249")
     assert_equal 10, transaction.invoice_id
     assert_equal 9, transaction.id
-    assert_equal 4140149827486249, transaction.credit_card_number
+    assert_equal "4140149827486249", transaction.credit_card_number
   end
 
   def test_finds_all_by_credit_card_number
     @transaction_repo = TransactionRepository.new("test/support/transaction_sample.csv")
     @transaction_repo.collect_transactions
-    transactions = @transaction_repo.find_all_by_credit_card_number(4844518708741275)
+    transactions = @transaction_repo.find_all_by_credit_card_number("4844518708741275")
     assert_equal 6, transactions.first.invoice_id
     assert_equal 5, transactions.first.id
-    assert_equal 4844518708741275, transactions.first.credit_card_number
+    assert_equal "4844518708741275", transactions.first.credit_card_number
     assert_equal "failed", transactions.first.result
 
     assert_equal 10, transactions[-1].invoice_id
     assert_equal 10, transactions[-1].id
-    assert_equal 4844518708741275, transactions[-1].credit_card_number
+    assert_equal "4844518708741275", transactions[-1].credit_card_number
     assert_equal "success", transactions[-1].result
   end
 
@@ -71,12 +71,12 @@ class TransactionRepositoryTest < MiniTest::Test
     transactions = @transaction_repo.find_all_by_result("failed")
     assert_equal 6, transactions.first.invoice_id
     assert_equal 5, transactions.first.id
-    assert_equal 4844518708741275, transactions.first.credit_card_number
+    assert_equal "4844518708741275", transactions.first.credit_card_number
     assert_equal "failed", transactions.first.result
 
     assert_equal 9, transactions[-1].invoice_id
     assert_equal 8, transactions[-1].id
-    assert_equal 4540842003561938, transactions[-1].credit_card_number
+    assert_equal "4540842003561938", transactions[-1].credit_card_number
     assert_equal "failed", transactions[-1].result
   end
 
@@ -86,12 +86,12 @@ class TransactionRepositoryTest < MiniTest::Test
     transactions = @transaction_repo.find_all_by_invoice_id(10)
     assert_equal 10, transactions.first.invoice_id
     assert_equal 9, transactions.first.id
-    assert_equal 4140149827486249, transactions.first.credit_card_number
+    assert_equal "4140149827486249", transactions.first.credit_card_number
     assert_equal "success", transactions.first.result
 
     assert_equal 10, transactions[-1].invoice_id
     assert_equal 10, transactions[-1].id
-    assert_equal 4844518708741275, transactions[-1].credit_card_number
+    assert_equal "4844518708741275", transactions[-1].credit_card_number
     assert_equal "success", transactions[-1].result
   end
 
@@ -100,9 +100,11 @@ end
 class FakeTransactionRepository
   attr_accessor :invoices
 
-  def find_invoices_by_invoice_id(invoice_id)
+  def find_invoice_by_invoice_id(invoice_id)
     @invoices
   end
+
+
 
 end
 
@@ -154,11 +156,11 @@ class TransactionParserTest < MiniTest::Test
     parsed_transactions = TransactionParser.parse(filename)
 
     third = parsed_transactions[2]
-    assert_equal 4354495077693036, third.credit_card_number
+    assert_equal 4354495077693036, third.credit_card_number.to_i
     assert_equal "success", third.result
 
     fifth = parsed_transactions[4]
-    assert_equal 4844518708741275, fifth.credit_card_number
+    assert_equal 4844518708741275, fifth.credit_card_number.to_i
     assert_equal "failed", fifth.result
   end
 

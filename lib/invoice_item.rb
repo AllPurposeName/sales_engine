@@ -5,19 +5,23 @@ class InvoiceItem
     @invoice_id = my_data[:invoice_id].to_i
     @item_id = my_data[:item_id].to_i
     @quantity = my_data[:quantity].to_i
-    @unit_price = my_data[:unit_price].to_i
+    @unit_price = BigDecimal.new(((my_data[:unit_price])).to_s) / 100
     @parent = my_parent
   end
 
   def invoice
-    @parent.find_invoice_by_invoice_id(@invoice_id)
+    @parent.find_invoice_by_invoice_id(self)
   end
 
   def item
-    @parent.find_items_by_item_id(@item_id)
+    @parent.find_item_by_item_id(@item_id)
   end
 
   def items
     @parent.find_items_by_item_id(@item_id)
+  end
+
+  def revenue
+    unit_price * quantity
   end
 end

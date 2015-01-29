@@ -1,12 +1,17 @@
 require'pry'
+require 'bigdecimal/util'
+require 'bigdecimal'
 require_relative '../lib/relationships'
 require_relative '../lib/invoice_item_parser'
 require_relative '../lib/business_intelligence'
+require_relative '../lib/higher_business_intelligence'
+
 
 class InvoiceItemRepository
+  include HigherBusinessIntelligence
   include BusinessIntelligence
   include Relationships
-  attr_reader :file_to_parse
+  attr_reader :file_to_parse, :sales_engine
 
   def inspect
     "#<#{self.class} #{@group.size} rows>"
@@ -22,4 +27,5 @@ class InvoiceItemRepository
   def collect_invoice_items
     @group = InvoiceItemParser.parse(file_to_parse, self)
   end
+
 end

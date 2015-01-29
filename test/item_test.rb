@@ -1,9 +1,10 @@
 require 'pry'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'bigdecimal'
+require 'bigdecimal/util'
 require_relative '../lib/item'
 require_relative '../lib/item_repository'
-# require_relative '../lib/invoice'
 require_relative '../lib/item_parser'
 
 class ItemTest < MiniTest::Test
@@ -29,8 +30,8 @@ class ItemTest < MiniTest::Test
   end
 
   def test_it_stores_a_unit_price
-    item = Item.new({:unit_price => 75107}, nil)
-    assert_equal 75107, item.unit_price
+    item = Item.new({:unit_price => BigDecimal.new("75107")}, nil)
+    assert_equal (BigDecimal.new("75107") / 100).to_digits, item.unit_price.to_digits
   end
 end
 
@@ -63,9 +64,9 @@ class ItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_unit_price
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_by_unit_price(31163)
+    item = @item_repo.find_by_unit_price(BigDecimal.new("31163") / 100)
     assert_equal 7, item.id
-    assert_equal 31163, item.unit_price
+    assert_equal "311.63", item.unit_price.to_digits
   end
 
   def test_finds_all_by_id
@@ -74,11 +75,11 @@ class ItemRepositoryTest < MiniTest::Test
     item = @item_repo.find_all_by_id(1)
     assert_equal 1, item.first.id
     assert_equal 'Item Qui Esse', item.first.name
-    assert_equal 75107, item.first.unit_price
+    assert_equal "751.07", item.first.unit_price.to_digits
 
     assert_equal 1, item.last.id
     assert_equal 'Item Autem Minima', item.last.name
-    assert_equal 67076, item.last.unit_price
+    assert_equal "670.76", item.last.unit_price.to_digits
   end
 
   def test_finds_all_by_name
@@ -86,11 +87,11 @@ class ItemRepositoryTest < MiniTest::Test
     @item_repo.collect_items
     items = @item_repo.find_all_by_name("Item Expedita")
     assert_equal 5, items.first.id
-    assert_equal 68723, items.first.unit_price
+    assert_equal "687.23", items.first.unit_price.to_digits
     assert_equal "Item Expedita", items.first.name
 
     assert_equal 7, items.last.id
-    assert_equal 31163, items.last.unit_price
+    assert_equal "311.63", items.last.unit_price.to_digits
     assert_equal "Item Expedita", items.last.name
   end
 
@@ -100,24 +101,24 @@ class ItemRepositoryTest < MiniTest::Test
     long_ass_latin_description = "Sunt eum id eius magni consequuntur delectus veritatis. Quisquam laborum illo ut ab. Ducimus in est id voluptas autem."
     item = @item_repo.find_all_by_description(long_ass_latin_description)
     assert_equal 3, item.first.id
-    assert_equal 32301, item.first.unit_price
+    assert_equal "323.01", item.first.unit_price.to_digits
     assert_equal long_ass_latin_description, item.first.description
 
     assert_equal 4, item.last.id
-    assert_equal 4291, item.last.unit_price
+    assert_equal "42.91", item.last.unit_price.to_digits
     assert_equal long_ass_latin_description, item.last.description
   end
 
   def test_finds_all_by_unit_price
     @item_repo = ItemRepository.new("test/support/items_sample.csv")
     @item_repo.collect_items
-    item = @item_repo.find_all_by_unit_price(22582)
+    item = @item_repo.find_all_by_unit_price(BigDecimal.new("22582") / 100)
     assert_equal 8, item.first.id
-    assert_equal 22582, item.first.unit_price
+    assert_equal "225.82", item.first.unit_price.to_digits
     assert_equal "Item Est Consequuntur", item.first.name
 
     assert_equal 9, item.last.id
-    assert_equal 22582, item.last.unit_price
+    assert_equal "225.82", item.last.unit_price.to_digits
     assert_equal "Item Quo Magnam", item.last.name
   end
 end

@@ -5,7 +5,7 @@ class Item
     @id = my_data[:id].to_i
     @name = my_data[:name]
     @description = my_data[:description]
-    @unit_price = my_data[:unit_price].to_i
+    @unit_price = BigDecimal.new(((my_data[:unit_price])).to_s) / 100
     @merchant_id = my_data[:merchant_id].to_i
     @parent = my_parent
   end
@@ -15,10 +15,14 @@ class Item
   end
 
   def invoice_items
-    @parent.find_invoice_items_by_id(@id)
+    @parent.find_invoice_items_by_item_id(@id)
   end
 
   def merchant
-    @parent.find_items_by_merchant_id(@merchant_id)
+    @parent.find_merchant_by_merchant_id(self)
+  end
+
+  def item_id
+    @id
   end
 end

@@ -1,12 +1,17 @@
+require 'bigdecimal'
+require 'bigdecimal/util'
 require'pry'
 require_relative '../lib/relationships'
 require_relative '../lib/transaction_parser'
 require_relative '../lib/business_intelligence'
+require_relative '../lib/higher_business_intelligence'
+
 
 class TransactionRepository
+  include HigherBusinessIntelligence
   include BusinessIntelligence
   include Relationships
-  attr_reader :file_to_parse
+  attr_reader :file_to_parse, :group
 
   def inspect
     "#<#{self.class} #{@group.size} rows>"

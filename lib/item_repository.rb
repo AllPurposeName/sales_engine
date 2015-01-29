@@ -1,9 +1,14 @@
 require'pry'
+require 'bigdecimal/util'
+require 'bigdecimal'
 require_relative '../lib/relationships'
 require_relative '../lib/item_parser'
 require_relative '../lib/business_intelligence'
+require_relative '../lib/higher_business_intelligence'
+
 
 class ItemRepository
+  include HigherBusinessIntelligence
   include BusinessIntelligence
   include Relationships
   attr_reader :file_to_parse

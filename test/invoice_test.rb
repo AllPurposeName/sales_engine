@@ -170,20 +170,36 @@ class FakeInvoiceRepository
                 :merchants,
                 :invoice_items
 
-  def find_transactions_by_invoices_id(id)
+  def find_transactions_by_invoice_id(id)
     @transactions
+  end
+
+  def find_transaction_by_invoice_id(id)
+    @transactions.first
   end
 
   def find_customers_by_customer_id(customer_id)
     @customers
   end
 
+  def find_customer_by_customer_id(customer_id)
+    @customers.first
+  end
+
   def find_merchants_by_merchant_id(merchant_id)
     @merchants
   end
 
-  def find_invoice_items_by_invoices_id(id)
+  def find_merchant_by_merchant_id(merchant_id)
+    @merchants.first
+  end
+
+  def find_invoice_items_by_invoice_id(id)
     @invoice_items
+  end
+
+  def find_invoice_item_by_invoice_id(id)
+    @invoice_items.first
   end
 end
 
@@ -196,7 +212,7 @@ class InvoiceIntegrationTest < MiniTest::Test
 
     transactions = Array.new(5){ Transaction.new(other_data, nil) }
     @invoice_repo.transactions = transactions
-    assert_equal transactions, @invoice.transaction
+    assert_equal transactions.first, @invoice.transaction
   end
 
   def test_it_finds_related_customer
@@ -207,7 +223,7 @@ class InvoiceIntegrationTest < MiniTest::Test
 
     customers = Array.new(5){ Customer.new(other_data, nil) }
     @invoice_repo.customers = customers
-    assert_equal customers, @invoice.customer
+    assert_equal customers.first, @invoice.customer
   end
 
   def test_it_finds_related_merchant
@@ -218,7 +234,7 @@ class InvoiceIntegrationTest < MiniTest::Test
 
     merchants = Array.new(5){ Merchant.new(other_data, nil) }
     @invoice_repo.merchants = merchants
-    assert_equal merchants, @invoice.merchant
+    assert_equal merchants.first, @invoice.merchant
   end
 
   def test_it_finds_related_invoice_item
@@ -229,7 +245,51 @@ class InvoiceIntegrationTest < MiniTest::Test
 
     invoice_items = Array.new(5){ Transaction.new(other_data, nil) }
     @invoice_repo.invoice_items = invoice_items
-    assert_equal invoice_items, @invoice.invoice_item
+    assert_equal invoice_items.first, @invoice.invoice_item
+  end
+
+  def test_it_finds_related_transactions
+    @invoice_repo = FakeInvoiceRepository.new
+    data = {:id => "7"}
+    @invoice = Invoice.new(data, @invoice_repo)
+    other_data = {:id => "7"}
+
+    transactions = Array.new(5){ Transaction.new(other_data, nil) }
+    @invoice_repo.transactions = transactions
+    assert_equal transactions, @invoice.transactions
+  end
+
+  def test_it_finds_related_customers
+    @invoice_repo = FakeInvoiceRepository.new
+    data = {:customer_id => "2"}
+    @invoice = Invoice.new(data, @invoice_repo)
+    other_data = {:id => "2"}
+
+    customers = Array.new(5){ Customer.new(other_data, nil) }
+    @invoice_repo.customers = customers
+    assert_equal customers, @invoice.customers
+  end
+
+  def test_it_finds_related_merchants
+    @invoice_repo = FakeInvoiceRepository.new
+    data = {:merchant_id => "7"}
+    @invoice = Invoice.new(data, @invoice_repo)
+    other_data = {:id => "66"}
+
+    merchants = Array.new(5){ Merchant.new(other_data, nil) }
+    @invoice_repo.merchants = merchants
+    assert_equal merchants, @invoice.merchants
+  end
+
+  def test_it_finds_related_invoice_items
+    @invoice_repo = FakeInvoiceRepository.new
+    data = {:id => "3"}
+    @invoice = Invoice.new(data, @invoice_repo)
+    other_data = {:id => "3"}
+
+    invoice_items = Array.new(5){ Transaction.new(other_data, nil) }
+    @invoice_repo.invoice_items = invoice_items
+    assert_equal invoice_items, @invoice.invoice_items
   end
 
   def test_it_parses_a_file_and_returns_an_array_of_instances_which_know_the_repo

@@ -18,19 +18,43 @@ class Invoice
   end
 
   def transaction
-    @parent.find_transactions_by_invoices_id(@id)
+    @parent.find_transaction_by_invoice_id(@id)
+  end
+
+  def transactions
+    @parent.find_transactions_by_invoice_id(@id)
+  end
+
+  def items
+    invoice_items.map do |invoice_item|
+      invoice_item.items
+    end.flatten
+
+
   end
 
   def customer
+    @parent.find_customer_by_customer_id(@customer_id)
+  end
+
+  def customers
     @parent.find_customers_by_customer_id(@customer_id)
   end
 
   def merchant
-    @parent.find_merchants_by_merchant_id(@merchant_id)
+    @parent.find_merchant_by_merchant_id(self)
+  end
+
+  def merchants
+    @parent.find_merchants_by_merchant_id(self)
   end
 
   def invoice_item
-    @parent.find_invoice_items_by_invoices_id(@id)
+    @parent.find_invoice_item_by_invoice_id(@id)
+  end
+
+  def invoice_items
+    @parent.find_invoice_items_by_invoice_id(@id)
   end
 
 end

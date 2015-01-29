@@ -1,9 +1,14 @@
+require 'bigdecimal'
+require 'bigdecimal/util'
 require'pry'
 require_relative '../lib/relationships'
 require_relative '../lib/merchant_parser'
 require_relative '../lib/business_intelligence'
+require_relative '../lib/higher_business_intelligence'
+
 
 class MerchantRepository
+  include HigherBusinessIntelligence
   include BusinessIntelligence
   include Relationships
   attr_reader :file_to_parse, :sales_engine
@@ -22,4 +27,5 @@ class MerchantRepository
   def collect_merchants
     @group = MerchantParser.parse(file_to_parse, self)
   end
+
 end

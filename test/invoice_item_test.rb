@@ -62,21 +62,22 @@ class InvoiceItemRepositoryTest < MiniTest::Test
   def test_finds_nearest_by_unit_price
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_by_unit_price(34873)
+    invoice_item = @invoice_item_repo.find_by_unit_price(BigDecimal.new("34873") / 100)
     assert_equal 1, invoice_item.invoice_id
     assert_equal 3, invoice_item.id
     assert_equal 8, invoice_item.quantity
-    assert_equal 34873, invoice_item.unit_price
+    assert_equal "348.73", invoice_item.unit_price.to_digits
   end
 
   def test_finds_all_by_unit_price
     @invoice_item_repo = InvoiceItemRepository.new("test/support/invoice_items_sample.csv")
     @invoice_item_repo.collect_invoice_items
-    invoice_item = @invoice_item_repo.find_all_by_unit_price(52100)
+    invoice_item = @invoice_item_repo.find_all_by_unit_price(BigDecimal.new("52100") / 100)
+
     assert_equal 6, invoice_item.first.id
     assert_equal 1, invoice_item.first.invoice_id
     assert_equal 541, invoice_item.first.item_id
-    assert_equal 52100, invoice_item.first.unit_price
+    assert_equal "521.00", invoice_item.first.unit_price.to_digits
     assert_equal 5, invoice_item.first.quantity
 
     assert_equal 9, invoice_item[-1].id
@@ -93,13 +94,13 @@ class InvoiceItemRepositoryTest < MiniTest::Test
     assert_equal 8, invoice_item.first.id
     assert_equal 1, invoice_item.first.invoice_id
     assert_equal 534, invoice_item.first.item_id
-    assert_equal 76941, invoice_item.first.unit_price
+    assert_equal "769.41", invoice_item.first.unit_price.to_digits
     assert_equal 6, invoice_item.first.quantity
 
     assert_equal 9, invoice_item[-1].id
     assert_equal 2, invoice_item[-1].invoice_id
     assert_equal 1832, invoice_item[-1].item_id
-    assert_equal 52100, invoice_item[-1].unit_price
+    assert_equal "521.00", invoice_item[-1].unit_price.to_digits
     assert_equal 6, invoice_item[-1].quantity
   end
 
@@ -109,13 +110,13 @@ class InvoiceItemRepositoryTest < MiniTest::Test
     invoice_item = @invoice_item_repo.find_all_by_invoice_id(2)
     assert_equal 1, invoice_item.first.id
     assert_equal 2, invoice_item.first.invoice_id
-    assert_equal 13635, invoice_item.first.unit_price
+    assert_equal "136.35", invoice_item.first.unit_price.to_digits
     assert_equal 539, invoice_item.first.item_id
     assert_equal 5, invoice_item.first.quantity
 
     assert_equal 9, invoice_item[-1].id
     assert_equal 2, invoice_item[-1].invoice_id
-    assert_equal 52100, invoice_item[-1].unit_price
+    assert_equal "521.00", invoice_item[-1].unit_price.to_digits
     assert_equal 1832, invoice_item[-1].item_id
     assert_equal 6, invoice_item[-1].quantity
   end
@@ -130,6 +131,10 @@ class FakeInvoiceItemRepository
   end
 
   def find_items_by_item_id(item_id)
+    @items
+  end
+
+  def find_item_by_item_id(item_id)
     @items
   end
 
@@ -186,11 +191,11 @@ class InvoiceItemParserTest < MiniTest::Test
     parsed_invoice_items = InvoiceItemParser.parse(filename)
 
     third = parsed_invoice_items[2]
-    assert_equal 34873, third.unit_price
+    assert_equal "348.73", third.unit_price.to_digits
     assert_equal 8, third.quantity
 
     fifth = parsed_invoice_items[4]
-    assert_equal 79140, fifth.unit_price
+    assert_equal "791.40", fifth.unit_price.to_digits
     assert_equal 7, fifth.quantity
   end
 

@@ -20,7 +20,14 @@ class Merchant
   end
 
   def invoices
-    @parent.find_invoices_by_merchant_id(@id)
+    invoices = @parent.find_invoices_by_merchant_id(@id)
   end
 
+  def revenue(date=nil)
+    @parent.get_revenue(self, date)
+  end
+
+  def favorite_customer
+    @parent.get_favorite_customer(self)
+  end
 end
