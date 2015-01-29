@@ -32,15 +32,4 @@ class InvoiceRepository
   def find_transactions_with_customer(customer_id)
     @sales_engine.find_all_by_customer_id
   end
-
-
-
-
-
-
-    # end
-
-    # def find_customer_by_merchant_id(id)
-    # end
-
 end

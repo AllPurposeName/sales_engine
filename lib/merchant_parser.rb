@@ -26,6 +26,3 @@ class MerchantParser
 
   end
 end
-
-# if file nonsense
-# puts MerchantParser.parse("test/support/merchant_sample.csv")

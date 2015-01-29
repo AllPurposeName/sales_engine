@@ -26,6 +26,3 @@ class TransactionParser
 
   end
 end
-
- # if file nonsense
- # puts TransactionParser.parse("test/support/transaction_sample.csv")

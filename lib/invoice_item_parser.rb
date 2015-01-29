@@ -26,6 +26,3 @@ class InvoiceItemParser
 
   end
 end
-
-# if file nonsense
-# puts InvoiceItemParser.parse("test/support/invoice_item_sample.csv")

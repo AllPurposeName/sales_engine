@@ -26,6 +26,3 @@ class CustomerParser
 
   end
 end
-
-# if file nonsense
-# puts CustomerParser.parse("test/support/customer_sample.csv")
